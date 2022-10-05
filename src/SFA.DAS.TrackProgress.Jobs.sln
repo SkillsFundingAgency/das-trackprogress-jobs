@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.TrackProgress.Jobs", "SFA.DAS.TrackProgress.jobs\SFA.DAS.TrackProgress.Jobs.csproj", "{680B75B4-0B05-4C3C-A56F-D4FF87E16AE3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.TrackProgress.TestMessagePublisher", "SFA.DAS.TrackProgress.TestMessagePublisher\SFA.DAS.TrackProgress.TestMessagePublisher.csproj", "{77960B9C-50F2-4547-B976-897C4DD02261}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{680B75B4-0B05-4C3C-A56F-D4FF87E16AE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{680B75B4-0B05-4C3C-A56F-D4FF87E16AE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{680B75B4-0B05-4C3C-A56F-D4FF87E16AE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{680B75B4-0B05-4C3C-A56F-D4FF87E16AE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77960B9C-50F2-4547-B976-897C4DD02261}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77960B9C-50F2-4547-B976-897C4DD02261}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77960B9C-50F2-4547-B976-897C4DD02261}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77960B9C-50F2-4547-B976-897C4DD02261}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0FBCFA61-0579-4AAB-9441-936F1AE7D55C}
+	EndGlobalSection
+EndGlobal
