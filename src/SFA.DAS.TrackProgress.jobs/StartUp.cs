@@ -25,10 +25,8 @@ public class Startup : FunctionsStartup
         var serviceProvider = builder.Services.BuildServiceProvider();
         Configuration = serviceProvider.GetService<IConfiguration>();
 
-        if (Configuration.IsLocalAcceptanceOrDev())
-        {
-            var n = 1 + 1;
-        }
+        // use when sharing bertween applications
+        // LearningTransportLocal.SetFolder(@"c:\scratch\.learningtransport");
 
         builder.Services.AddApplicationInsightsTelemetry();
         builder.Services.AddLogging();

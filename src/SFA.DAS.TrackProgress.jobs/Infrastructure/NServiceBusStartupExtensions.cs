@@ -9,6 +9,7 @@ using SFA.DAS.NServiceBus.AzureFunction.Hosting;
 using SFA.DAS.NServiceBus.Configuration;
 using SFA.DAS.NServiceBus.Configuration.AzureServiceBus;
 using SFA.DAS.NServiceBus.Configuration.NewtonsoftJsonSerializer;
+using SFA.DAS.TrackProgress.Messages.Events;
 
 namespace SFA.DAS.TrackProgress.Jobs.Infrastructure;
 
@@ -30,7 +31,6 @@ public static class NServiceBusStartupExtensions
         if (config.NServiceBusConnectionString().Equals("UseLearningEndpoint=true", StringComparison.CurrentCultureIgnoreCase))
         {
             endpointConfiguration.UseTransport<LearningTransport>().StorageDirectory(LearningTransportLocal.Folder());
-            endpointConfiguration.UseLearningTransport(s => s.AddRouting());
         }
         else
         {

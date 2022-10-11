@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using SFA.DAS.NServiceBus.AzureFunction.Attributes;
 using SFA.DAS.TrackProgress.Jobs.Api;
 using SFA.DAS.TrackProgress.Jobs.Infrastructure;
+using SFA.DAS.TrackProgress.Messages.Events;
 
 namespace SFA.DAS.TrackProgress.Jobs.Handlers;
 
@@ -22,14 +23,14 @@ public class NewProgressAddedEventHandler
     [FunctionName("HandleNewProgressAddedEvent")]
     public async Task HandleCommand([NServiceBusTrigger(Endpoint = QueueNames.NewProgressAdded)] NewProgressAddedEvent @event)
     {
-        _logger.LogInformation("Started processing {name} for Commitment ApprenticeshipId {id}", nameof(NewProgressAddedEvent), @event?.CommitmentsApprenticeId);
+        _logger.LogInformation("Started processing {name} for Commitment ApprenticeshipId {id}", nameof(NewProgressAddedEvent), @event?.CommitmentsApprenticeshipId);
         try
         {
-            await _outerApi.CreateSnapshot(@event.CommitmentsApprenticeId);
+            await _outerApi.CreateSnapshot(@event.CommitmentsApprenticeshipId);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Error when processing {name} for Commitment ApprenticeshipId {id}", nameof(NewProgressAddedEvent), @event?.CommitmentsApprenticeId);
+            _logger.LogError(e, "Error when processing {name} for Commitment ApprenticeshipId {id}", nameof(NewProgressAddedEvent), @event?.CommitmentsApprenticeshipId);
             throw;
         }
     }

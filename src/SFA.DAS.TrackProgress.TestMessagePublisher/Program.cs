@@ -4,7 +4,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
 using NServiceBus;
-using SFA.DAS.TrackProgress;
+using SFA.DAS.TrackProgress.Messages.Events;
 using SFA.DAS.TrackProgress.TestMessagePublisher;
 
 IConfiguration config = new ConfigurationBuilder()
@@ -45,7 +45,7 @@ async Task PublishNewProgressAddedEvent(IServiceProvider services)
     IServiceProvider provider = serviceScope.ServiceProvider;
     var messagePublisher = provider.GetRequiredService<IMessageSession>();
 
-    await messagePublisher.Publish(new NewProgressAddedEvent { CommitmentsApprenticeId = 34254 });
+    await messagePublisher.Publish(new NewProgressAddedEvent { CommitmentsApprenticeshipId = 34254 });
 
     Console.WriteLine("Message published.");
     Console.WriteLine("Press enter to continue");
