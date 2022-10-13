@@ -1,14 +1,15 @@
 ﻿using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+using NServiceBus;
 using RestEase.HttpClientFactory;
 using SFA.DAS.Http.Configuration;
+using SFA.DAS.NServiceBus.AzureFunction.Extensions;
+using SFA.DAS.NServiceBus.Extensions;
 using SFA.DAS.TrackProgress.Jobs.Api;
 using SFA.DAS.TrackProgress.Jobs.Infrastructure;
 
 [assembly: FunctionsStartup(typeof(SFA.DAS.TrackProgress.Jobs.Startup))]
-
 namespace SFA.DAS.TrackProgress.Jobs;
 
 public class Startup : FunctionsStartup
@@ -18,6 +19,7 @@ public class Startup : FunctionsStartup
     public override void ConfigureAppConfiguration(IFunctionsConfigurationBuilder builder)
     {
         builder.ConfigureConfiguration();
+        builder.ConfigureServiceBusManagedIdentity();
     }
 
     public override void Configure(IFunctionsHostBuilder builder)
@@ -25,16 +27,30 @@ public class Startup : FunctionsStartup
         var serviceProvider = builder.Services.BuildServiceProvider();
         Configuration = serviceProvider.GetService<IConfiguration>();
 
-        // use when sharing bertween applications
-        // LearningTransportLocal.SetFolder(@"c:\scratch\.learningtransport");
-
         builder.Services.AddApplicationInsightsTelemetry();
         builder.Services.AddLogging();
 
         builder.Services.AddApplicationOptions();
         builder.Services.ConfigureFromOptions(f => f.TrackProgressApi);
         builder.Services.AddSingleton<IApimClientConfiguration>(x => x.GetRequiredService<TrackProgressApiOptions>());
-        builder.Services.AddNServiceBus(Configuration);
+
+        typeof(Startup).Assembly.AutoSubscribeToQueuesWithReflection(Configuration).GetAwaiter().GetResult();
+        
+        builder.UseNServiceBus((IConfiguration appConfiguration) =>
+        {
+            var configuration = new ServiceBusTriggeredEndpointConfiguration(
+                endpointName: QueueNames.TrackProgress,
+                configuration: appConfiguration);
+
+            configuration.AdvancedConfiguration.UseNewtonsoftJsonSerializer();
+            configuration.AdvancedConfiguration.SendFailedMessagesTo($"{QueueNames.TrackProgress}-error");
+
+            configuration.AdvancedConfiguration.UseMessageConventions();
+            configuration.Transport.SubscriptionRuleNamingConvention(AzureQueueNameShortener.Shorten);
+            configuration.AdvancedConfiguration.EnableInstallers();
+
+            return configuration;
+        });
 
         builder.Services.AddSingleton<IApimClientConfiguration>(x => x.GetRequiredService<TrackProgressApiOptions>());
         builder.Services.AddTransient<Http.MessageHandlers.DefaultHeadersHandler>();
@@ -49,10 +65,6 @@ public class Startup : FunctionsStartup
         builder.Services.AddRestEaseClient<ITrackProgressOuterApi>(url)
             .AddHttpMessageHandler<Http.MessageHandlers.DefaultHeadersHandler>()
             .AddHttpMessageHandler<Http.MessageHandlers.ApimHeadersHandler>()
-            .AddHttpMessageHandler<Http.MessageHandlers.LoggingMessageHandler>()
-            //.AddTypedClient<>
-            ;
-
-
+            .AddHttpMessageHandler<Http.MessageHandlers.LoggingMessageHandler>();
     }
 }

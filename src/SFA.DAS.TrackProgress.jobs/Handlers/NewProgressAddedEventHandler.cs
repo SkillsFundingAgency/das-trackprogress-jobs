@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
-using SFA.DAS.NServiceBus.AzureFunction.Attributes;
+using NServiceBus;
 using SFA.DAS.TrackProgress.Jobs.Api;
-using SFA.DAS.TrackProgress.Jobs.Infrastructure;
 using SFA.DAS.TrackProgress.Messages.Events;
 
 namespace SFA.DAS.TrackProgress.Jobs.Handlers;
 
-public class NewProgressAddedEventHandler
+public class NewProgressAddedEventHandler : IHandleMessages<NewProgressAddedEvent>
 {
     private readonly ITrackProgressOuterApi _outerApi;
     private readonly ILogger<NewProgressAddedEventHandler> _logger;
@@ -20,19 +18,18 @@ public class NewProgressAddedEventHandler
         _logger = logger;
     }
 
-    [FunctionName("HandleNewProgressAddedEvent")]
-    public async Task HandleCommand([NServiceBusTrigger(Endpoint = QueueNames.NewProgressAdded)] NewProgressAddedEvent @event)
+    public async Task Handle(NewProgressAddedEvent message, IMessageHandlerContext context)
     {
-        _logger.LogInformation("Started processing {name} for Commitment ApprenticeshipId {id}", nameof(NewProgressAddedEvent), @event?.CommitmentsApprenticeshipId);
+        _logger.LogInformation("Started processing {name} for Commitment ApprenticeshipId {id}", nameof(NewProgressAddedEvent), message?.CommitmentsApprenticeshipId);
         try
         {
-            await _outerApi.CreateSnapshot(@event.CommitmentsApprenticeshipId);
+            _logger.LogInformation("Processing Message {0}", message?.CommitmentsApprenticeshipId);
+            await _outerApi.CreateSnapshot(message.CommitmentsApprenticeshipId);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Error when processing {name} for Commitment ApprenticeshipId {id}", nameof(NewProgressAddedEvent), @event?.CommitmentsApprenticeshipId);
+            _logger.LogError(e, "Error when processing {name} for Commitment ApprenticeshipId {id}", nameof(NewProgressAddedEvent), message?.CommitmentsApprenticeshipId);
             throw;
         }
     }
 }
-

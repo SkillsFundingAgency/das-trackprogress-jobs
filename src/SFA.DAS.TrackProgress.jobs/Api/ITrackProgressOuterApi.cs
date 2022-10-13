@@ -7,4 +7,3 @@ public interface ITrackProgressOuterApi
     [Post("apprenticeship/{id}/snapshot")]
     Task CreateSnapshot([Path]long id);
 }
-

@@ -15,8 +15,12 @@
     <PackageReference Include="RestEase.HttpClientFactory" Version="1.5.7" />
     <PackageReference Include="SFA.DAS.Configuration.AzureTableStorage" Version="3.0.84" />
     <PackageReference Include="SFA.DAS.Http" Version="3.2.69" />
-    <PackageReference Include="SFA.DAS.NServiceBus.AzureFunction" Version="17.0.49" />
+    <!--<PackageReference Include="SFA.DAS.NServiceBus.AzureFunction" Version="17.0.49" />-->
     <PackageReference Include="SFA.DAS.TrackProgress.Messages" Version="0.1.5-prerelease-5" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SFA.DAS.NServiceBus.AzureFunction.Extensions\SFA.DAS.NServiceBus.AzureFunction.Extensions.csproj" />
+    <ProjectReference Include="..\SFA.DAS.NServiceBus.Extensions\SFA.DAS.NServiceBus.Extensions.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">

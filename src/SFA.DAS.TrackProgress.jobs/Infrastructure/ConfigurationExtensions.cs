@@ -15,8 +15,4 @@ public static class ConfigurationExtensions
                config["EnvironmentName"].Equals("ACCEPTANCE_TESTS", StringComparison.CurrentCultureIgnoreCase) ||
                config["EnvironmentName"].Equals("DEV", StringComparison.CurrentCultureIgnoreCase);
     }
-
-    public static string NServiceBusConnectionString(this IConfiguration config) => config["NServiceBusConnectionString"] ?? "UseLearningEndpoint=true";
-
-    public static string NServiceBusLicense(this IConfiguration config) => config["NServiceBusLicense"];
 }

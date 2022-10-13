@@ -5,7 +5,13 @@ VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.TrackProgress.Jobs", "SFA.DAS.TrackProgress.jobs\SFA.DAS.TrackProgress.Jobs.csproj", "{680B75B4-0B05-4C3C-A56F-D4FF87E16AE3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.TrackProgress.TestMessagePublisher", "SFA.DAS.TrackProgress.TestMessagePublisher\SFA.DAS.TrackProgress.TestMessagePublisher.csproj", "{77960B9C-50F2-4547-B976-897C4DD02261}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.TrackProgress.TestMessagePublisher", "SFA.DAS.TrackProgress.TestMessagePublisher\SFA.DAS.TrackProgress.TestMessagePublisher.csproj", "{77960B9C-50F2-4547-B976-897C4DD02261}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{0958590A-7C76-4CB4-9D2C-F9E46AF512AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.NServiceBus.Extensions", "SFA.DAS.NServiceBus.Extensions\SFA.DAS.NServiceBus.Extensions.csproj", "{638AA330-2DCC-4255-BA0D-760B404477E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.NServiceBus.AzureFunction.Extensions", "SFA.DAS.NServiceBus.AzureFunction.Extensions\SFA.DAS.NServiceBus.AzureFunction.Extensions.csproj", "{29131587-E2D9-4BAA-90A5-5522A6CD2A46}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,9 +27,20 @@ Global
 		{77960B9C-50F2-4547-B976-897C4DD02261}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77960B9C-50F2-4547-B976-897C4DD02261}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77960B9C-50F2-4547-B976-897C4DD02261}.Release|Any CPU.Build.0 = Release|Any CPU
+		{638AA330-2DCC-4255-BA0D-760B404477E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{638AA330-2DCC-4255-BA0D-760B404477E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{638AA330-2DCC-4255-BA0D-760B404477E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{638AA330-2DCC-4255-BA0D-760B404477E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29131587-E2D9-4BAA-90A5-5522A6CD2A46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29131587-E2D9-4BAA-90A5-5522A6CD2A46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29131587-E2D9-4BAA-90A5-5522A6CD2A46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29131587-E2D9-4BAA-90A5-5522A6CD2A46}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{77960B9C-50F2-4547-B976-897C4DD02261} = {0958590A-7C76-4CB4-9D2C-F9E46AF512AC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0FBCFA61-0579-4AAB-9441-936F1AE7D55C}
