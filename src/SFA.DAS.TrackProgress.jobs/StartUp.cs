@@ -31,7 +31,7 @@ public class Startup : FunctionsStartup
         builder.Services.AddLogging();
 
         builder.Services.AddApplicationOptions();
-        builder.Services.ConfigureFromOptions(f => f.TrackProgressApi);
+        builder.Services.ConfigureFromOptions(f => f.TrackProgressInternalApi);
         builder.Services.AddSingleton<IApimClientConfiguration>(x => x.GetRequiredService<TrackProgressApiOptions>());
 
         typeof(Startup).Assembly.AutoSubscribeToQueuesWithReflection(Configuration).GetAwaiter().GetResult();
