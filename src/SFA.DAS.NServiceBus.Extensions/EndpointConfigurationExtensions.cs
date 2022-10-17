@@ -15,35 +15,28 @@ public static class EndpointConfigurationExtensions
 
         var serialization = config.UseSerialization<NewtonsoftJsonSerializer>();
         serialization.Settings(settings);
-        
         return config;
     }
 
     public static EndpointConfiguration UseMessageConventions(this EndpointConfiguration endpointConfiguration)
     {
-        var conventions = endpointConfiguration.Conventions(); 
-        conventions.DefiningMessagesAs(IsMessage); 
-        conventions.DefiningMessagesAs(IsEvent);
-        conventions.DefiningMessagesAs(IsCommand);
+        endpointConfiguration.Conventions()
+            .DefiningMessagesAs(IsMessage)
+            .DefiningEventsAs(IsEvent)
+            .DefiningCommandsAs(IsCommand);
 
         return endpointConfiguration;
     }
 
-    private static bool IsMessage(Type t) => t is IMessage || IsSfaMessage(t, "Messages");
+    public static bool IsMessage(Type t) => IsSfaMessage(t, "Messages");
 
-    private static bool IsEvent(Type t) => t is IEvent || IsSfaMessage(t, "Messages.Events");
+    public static bool IsEvent(Type t) => IsSfaMessage(t, "Messages.Events");
 
-    private static bool IsCommand(Type t) => t is ICommand || IsSfaMessage(t, "Messages.Commands");
+    public static bool IsCommand(Type t) => IsSfaMessage(t, "Messages.Commands");
 
-    private static bool IsSfaMessage(Type t, string namespaceSuffix)
-    {
-        if (t.Namespace != null && t.Namespace.EndsWith(namespaceSuffix))
-        {
-            var x = t.FullName;
-        }
-
-        return t.Namespace != null &&
+    public static bool IsSfaMessage(Type t, string namespaceSuffix)
+        => t.Namespace != null &&
                t.Namespace.StartsWith("SFA.DAS") &&
                t.Namespace.EndsWith(namespaceSuffix);
-    }
+    
 }

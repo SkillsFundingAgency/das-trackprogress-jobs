@@ -1,6 +1,8 @@
-﻿using Microsoft.Azure.Functions.Extensions.DependencyInjection;
+﻿using System.Reflection;
+using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using NServiceBus;
 using RestEase.HttpClientFactory;
 using SFA.DAS.Http.Configuration;
@@ -34,21 +36,14 @@ public class Startup : FunctionsStartup
         builder.Services.ConfigureFromOptions(f => f.TrackProgressInternalApi);
         builder.Services.AddSingleton<IApimClientConfiguration>(x => x.GetRequiredService<TrackProgressApiOptions>());
 
-        typeof(Startup).Assembly.AutoSubscribeToQueuesWithReflection(Configuration).GetAwaiter().GetResult();
+        typeof(Startup).Assembly.AutoSubscribeToQueuesWithReflection(Configuration!).GetAwaiter().GetResult();
         
         builder.UseNServiceBus((IConfiguration appConfiguration) =>
         {
-            var configuration = new ServiceBusTriggeredEndpointConfiguration(
-                endpointName: QueueNames.TrackProgress,
-                configuration: appConfiguration);
-
+            var configuration = ServiceBusEndpointFactory.CreateSingleQueueConfiguration(QueueNames.TrackProgress, appConfiguration);
             configuration.AdvancedConfiguration.UseNewtonsoftJsonSerializer();
-            configuration.AdvancedConfiguration.SendFailedMessagesTo($"{QueueNames.TrackProgress}-error");
-
             configuration.AdvancedConfiguration.UseMessageConventions();
-            configuration.Transport.SubscriptionRuleNamingConvention(AzureQueueNameShortener.Shorten);
             configuration.AdvancedConfiguration.EnableInstallers();
-
             return configuration;
         });
 

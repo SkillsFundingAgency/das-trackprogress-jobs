@@ -10,4 +10,3 @@ public static class TransportExtensions
         routesToAdd(settings);
     }
 }
-
