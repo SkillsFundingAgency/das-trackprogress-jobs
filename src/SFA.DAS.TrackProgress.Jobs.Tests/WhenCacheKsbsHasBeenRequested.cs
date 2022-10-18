@@ -18,6 +18,6 @@ public class WhenCacheKsbsHasBeenRequested
     {
         await sut.Handle(cmd, new TestableMessageHandlerContext());
 
-        api.Verify(m => m.PopulateKsbs(cmd.Standard, It.Is<PopulateKsbsRequest>(p=>p.KsbIds.Length == cmd.KsbIds.Length && p.KsbIds[0] == cmd.KsbIds[0])));
+        api.Verify(m => m.PopulateKsbs(cmd.Standard, It.Is<PopulateKsbsRequest>(p=>p.KsbIds.Equals(cmd.KsbIds))));
     }
 }
