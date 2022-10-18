@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.TrackProgress.Jobs.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.NServiceBus.Extensions.UnitTests", "SFA.DAS.NServiceBus.Extensions.UnitTests\SFA.DAS.NServiceBus.Extensions.UnitTests.csproj", "{BA8900D4-940F-480D-AD0E-01035917D25B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.NServiceBus.AzureFunction.Extensions.UnitTests", "SFA.DAS.NServiceBus.AzureFunction.Extensions.UnitTests\SFA.DAS.NServiceBus.AzureFunction.Extensions.UnitTests.csproj", "{30E0EE94-38A5-4A7C-92B9-D3679CD18FDB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.NServiceBus.AzureFunction.Extensions.UnitTests", "SFA.DAS.NServiceBus.AzureFunction.Extensions.UnitTests\SFA.DAS.NServiceBus.AzureFunction.Extensions.UnitTests.csproj", "{30E0EE94-38A5-4A7C-92B9-D3679CD18FDB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.TrackProgress.Jobs.MockServer", "SFA.DAS.TrackProgress.Jobs.MockServer\SFA.DAS.TrackProgress.Jobs.MockServer.csproj", "{CA284AB6-F9F4-4C37-A903-0FCF5C5AB48E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +55,10 @@ Global
 		{30E0EE94-38A5-4A7C-92B9-D3679CD18FDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30E0EE94-38A5-4A7C-92B9-D3679CD18FDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30E0EE94-38A5-4A7C-92B9-D3679CD18FDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA284AB6-F9F4-4C37-A903-0FCF5C5AB48E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA284AB6-F9F4-4C37-A903-0FCF5C5AB48E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA284AB6-F9F4-4C37-A903-0FCF5C5AB48E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA284AB6-F9F4-4C37-A903-0FCF5C5AB48E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +66,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{77960B9C-50F2-4547-B976-897C4DD02261} = {0958590A-7C76-4CB4-9D2C-F9E46AF512AC}
 		{4A0AE124-9BDE-473D-BA58-AD550A2B1BFF} = {0958590A-7C76-4CB4-9D2C-F9E46AF512AC}
+		{CA284AB6-F9F4-4C37-A903-0FCF5C5AB48E} = {0958590A-7C76-4CB4-9D2C-F9E46AF512AC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0FBCFA61-0579-4AAB-9441-936F1AE7D55C}
