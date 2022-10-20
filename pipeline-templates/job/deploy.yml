@@ -43,7 +43,7 @@ jobs:
           parameters:
             EnvironmentName: $(EnvironmentName)
             ServiceConnection: ${{ parameters.ServiceConnection }}
-            SourcePath: $(Pipeline.Workspace)/das-employer-config/Configuration/SFA.DAS.TrackProgress.Jobs
+            SourcePath: $(Pipeline.Workspace)/das-employer-config/Configuration/das-trackprogress-jobs
             StorageAccountName: $(ConfigurationStorageAccountName)
             StorageAccountResourceGroup: $(SharedEnvResourceGroup)
             TargetFileName: '*.schema.json'
