@@ -50,6 +50,7 @@ jobs:
             TableName: Configuration
             ConfigurationSecrets:
               NServiceBusLicense: $(NServiceBusLicense)
+              TrackProgressInternalApimSubscriptionKey: $(TrackProgressInternalApimSubscriptionKey)
         - template: azure-pipelines-templates/deploy/step/function-deploy.yml@das-platform-building-blocks
           parameters:
             ServiceConnection: ${{ parameters.ServiceConnection }}
