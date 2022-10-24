@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SFA.DAS.TrackProgress.jobs\SFA.DAS.TrackProgress.Jobs.csproj" />
+    <ProjectReference Include="..\SFA.DAS.TrackProgress.Jobs\SFA.DAS.TrackProgress.Jobs.csproj" />
   </ItemGroup>
 
 </Project>

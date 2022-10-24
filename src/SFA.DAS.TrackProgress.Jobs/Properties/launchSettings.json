@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "SFA_DAS.TrackProgress.jobs": {
+    "SFA_DAS.TrackProgress.Jobs": {
       "commandName": "Project",
       "commandLineArgs": "--port 7000"
     },
