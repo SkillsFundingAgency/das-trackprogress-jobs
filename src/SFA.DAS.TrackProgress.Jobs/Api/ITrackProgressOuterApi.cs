@@ -10,7 +10,5 @@ public interface ITrackProgressOuterApi
     Task CreateSnapshot([Path]long id);
 
     [Post("courses/{standard}/ksbs")]
-    Task PopulateKsbs([Path] string standard, [FromBody] PopulateKsbsRequest ksbsRequest);
+    Task PopulateKsbs([Path] string standard);
 }
-
-public record PopulateKsbsRequest(Guid[] KsbIds);

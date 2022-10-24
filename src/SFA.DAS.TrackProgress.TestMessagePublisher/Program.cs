@@ -51,7 +51,7 @@ try
                 await PublishMessage(endpointInstance, new NewProgressAddedEvent {CommitmentsApprenticeshipId = 7887});
                 break;
             case "2":
-                await SendMessage(endpointInstance, new CacheKsbsCommand {Standard = "CourseABC", KsbIds = new [] { Guid.NewGuid(), Guid.NewGuid()}});
+                await SendMessage(endpointInstance, new CacheKsbsCommand {StandardUid = "CourseABC"});
                 break;
             case "x":
                 await endpointInstance.Stop();
