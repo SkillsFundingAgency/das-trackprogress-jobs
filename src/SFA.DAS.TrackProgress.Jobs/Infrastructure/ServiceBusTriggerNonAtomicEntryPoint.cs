@@ -18,6 +18,6 @@ internal class ServiceBusTriggerNonAtomicEntryPoint
         ILogger logger,
         ExecutionContext context)
     {
-        await endpoint.ProcessNonAtomic(message, context, logger);
+        //await endpoint.ProcessNonAtomic(message, context, logger);
     }
 }
