@@ -15,8 +15,8 @@ public static class FunctionsConfigurationBuilderExtension
 
         var serviceBusNamespace = preConfig.GetValue<string>(key);
 
-        if (serviceBusNamespace == null)
-            throw new Exception($"{key} was not found, will add wrong value");
+        if(preConfig.GetValue<string>(key) == "AT")
+            throw new Exception($"{key} value is {serviceBusNamespace}");
 
         if (serviceBusNamespace != null)
         {
