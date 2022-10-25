@@ -21,7 +21,7 @@ public static class AssemblyExtensions
             var connectionString = configuration.GetValue<string>(connectionStringName);
 
             var managementClient = new ManagementClient(connectionString);
-            await CreateQueuesWithReflection(myAssembly, managementClient, errorQueue, topicName, logger);
+            await CreateQueuesWithReflection(myAssembly, managementClient, errorQueue, topicName, logger, configuration);
 
         }
         catch (Exception e)
@@ -35,7 +35,8 @@ public static class AssemblyExtensions
         ManagementClient managementClient,
         string? errorQueue = null,
         string topicName = "bundle-1",
-        ILogger? logger = null)
+        ILogger? logger = null,
+        IConfiguration configuration)
     {
 
         var attribute = myAssembly.GetTypes()
@@ -47,6 +48,9 @@ public static class AssemblyExtensions
             ?? throw new Exception("No endpoint was found");
 
         var endpointQueueName = attribute.QueueName;
+
+        if (configuration.GetValue<string>("EnvironmentName") == "AT")
+            throw new Exception($"Going to create queue name {endpointQueueName}");
 
         logger?.LogInformation("Queue Name: {queueName}", endpointQueueName);
 
