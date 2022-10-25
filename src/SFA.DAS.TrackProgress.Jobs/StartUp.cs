@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,11 +40,20 @@ public class Startup : FunctionsStartup
 
         builder.UseNServiceBus((IConfiguration appConfiguration) =>
         {
-            var configuration = ServiceBusEndpointFactory.CreateSingleQueueConfiguration(QueueNames.TrackProgress, appConfiguration);
-            configuration.AdvancedConfiguration.UseNewtonsoftJsonSerializer();
-            configuration.AdvancedConfiguration.UseMessageConventions();
-            configuration.AdvancedConfiguration.EnableInstallers();
-            return configuration;
+            try
+            {
+                var configuration =
+                    ServiceBusEndpointFactory.CreateSingleQueueConfiguration(QueueNames.TrackProgress,
+                        appConfiguration);
+                configuration.AdvancedConfiguration.UseNewtonsoftJsonSerializer();
+                configuration.AdvancedConfiguration.UseMessageConventions();
+                configuration.AdvancedConfiguration.EnableInstallers();
+                return configuration;
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Problem configuring NSB {e.Message}", e);
+            }
         });
 
         builder.Services.AddSingleton<IApimClientConfiguration>(x => x.GetRequiredService<TrackProgressApiOptions>());
