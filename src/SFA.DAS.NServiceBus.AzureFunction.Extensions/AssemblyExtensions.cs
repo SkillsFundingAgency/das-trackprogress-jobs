@@ -17,6 +17,12 @@ public static class AssemblyExtensions
         ILogger? logger = null)
     {
         var connectionString = configuration.GetValue<string>(connectionStringName);
+
+        if (connectionString == null)
+        {
+            throw new Exception("AzureWebJobsServiceBus could not be found");
+        }
+
         var managementClient = new ManagementClient(connectionString);
         await CreateQueuesWithReflection(myAssembly, managementClient, errorQueue, topicName, logger);
     }

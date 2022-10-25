@@ -26,8 +26,6 @@ public class Startup : FunctionsStartup
 
     public override void Configure(IFunctionsHostBuilder builder)
     {
-        //var serviceProvider = builder.Services.BuildServiceProvider();
-        //Configuration = serviceProvider.GetService<IConfiguration>();
         Configuration = builder.GetContext().Configuration;
 
         builder.Services.AddApplicationInsightsTelemetry();
@@ -37,7 +35,7 @@ public class Startup : FunctionsStartup
         builder.Services.ConfigureFromOptions(f => f.TrackProgressInternalApi);
         builder.Services.AddSingleton<IApimClientConfiguration>(x => x.GetRequiredService<TrackProgressApiOptions>());
 
-        //typeof(Startup).Assembly.AutoSubscribeToQueuesWithReflection(Configuration!).GetAwaiter().GetResult();
+        typeof(Startup).Assembly.AutoSubscribeToQueuesWithReflection(Configuration!).GetAwaiter().GetResult();
         
         //builder.UseNServiceBus((IConfiguration appConfiguration) =>
         //{
