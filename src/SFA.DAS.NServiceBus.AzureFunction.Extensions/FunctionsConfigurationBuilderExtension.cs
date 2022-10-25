@@ -15,7 +15,7 @@ public static class FunctionsConfigurationBuilderExtension
 
         var serviceBusNamespace = preConfig.GetValue<string>(key);
 
-        if(preConfig.GetValue<string>(key) == "AT")
+        if(preConfig.GetValue<string>("EnvironmentName") == "AT")
             throw new Exception($"{key} value is {serviceBusNamespace}");
 
         if (serviceBusNamespace != null)
