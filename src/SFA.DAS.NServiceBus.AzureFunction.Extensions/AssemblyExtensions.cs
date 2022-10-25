@@ -21,7 +21,7 @@ public static class AssemblyExtensions
             var connectionString = configuration.GetValue<string>(connectionStringName);
 
             var managementClient = new ManagementClient(connectionString);
-            await CreateQueuesWithReflection(myAssembly, managementClient, errorQueue, topicName, logger, configuration);
+            await CreateQueuesWithReflection(myAssembly, managementClient, configuration, errorQueue, topicName, logger);
 
         }
         catch (Exception e)
@@ -33,10 +33,10 @@ public static class AssemblyExtensions
 
     private static async Task CreateQueuesWithReflection(Assembly myAssembly,
         ManagementClient managementClient,
+        IConfiguration configuration,
         string? errorQueue = null,
         string topicName = "bundle-1",
-        ILogger? logger = null,
-        IConfiguration configuration)
+        ILogger? logger = null)
     {
 
         var attribute = myAssembly.GetTypes()
