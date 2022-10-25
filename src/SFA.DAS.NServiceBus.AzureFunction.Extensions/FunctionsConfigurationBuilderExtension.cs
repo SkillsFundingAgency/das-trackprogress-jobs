@@ -14,10 +14,6 @@ public static class FunctionsConfigurationBuilderExtension
         var key = $"{connectionStringName}__fullyQualifiedNamespace";
 
         var serviceBusNamespace = preConfig.GetValue<string>(key);
-
-        //if(preConfig.GetValue<string>("EnvironmentName") == "AT")
-        //    throw new Exception($"{key} value is {serviceBusNamespace}");
-
         if (serviceBusNamespace != null)
         {
             builder.ConfigurationBuilder.AddInMemoryCollection(

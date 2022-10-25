@@ -16,13 +16,19 @@ public static class AssemblyExtensions
         string topicName = "bundle-1",
         ILogger? logger = null)
     {
-        var connectionString = configuration.GetValue<string>(connectionStringName);
+        try
+        {
+            var connectionString = configuration.GetValue<string>(connectionStringName);
 
-        if(configuration.GetValue<string>("EnvironmentName") == "AT")
-            throw new Exception($"AzureWebJobsServiceBus value is '{connectionString}'");
+            var managementClient = new ManagementClient(connectionString);
+            await CreateQueuesWithReflection(myAssembly, managementClient, errorQueue, topicName, logger);
 
-        var managementClient = new ManagementClient(connectionString);
-        await CreateQueuesWithReflection(myAssembly, managementClient, errorQueue, topicName, logger);
+        }
+        catch (Exception e)
+        {
+            throw new Exception($"Error running auto subscribe {e.Message}", e);
+        }
+
     }
 
     private static async Task CreateQueuesWithReflection(Assembly myAssembly,
