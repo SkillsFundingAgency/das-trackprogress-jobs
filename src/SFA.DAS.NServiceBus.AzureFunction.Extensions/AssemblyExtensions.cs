@@ -49,25 +49,26 @@ public static class AssemblyExtensions
 
         var endpointQueueName = attribute.QueueName;
 
-        if (configuration.GetValue<string>("EnvironmentName") == "AT")
-            throw new Exception($"Going to create queue name {endpointQueueName}");
-
         logger?.LogInformation("Queue Name: {queueName}", endpointQueueName);
 
         errorQueue ??= $"{endpointQueueName}-error";
 
-        await CreateQueue(endpointQueueName, managementClient, logger);
-        await CreateQueue(errorQueue, managementClient, logger);
+        await CreateQueue(endpointQueueName, managementClient, logger, configuration);
+        await CreateQueue(errorQueue, managementClient, logger, configuration);
 
         await CreateSubscription(topicName, managementClient, endpointQueueName, logger);
     }
 
-    private static async Task CreateQueue(string endpointQueueName, ManagementClient managementClient, ILogger? logger)
+    private static async Task CreateQueue(string endpointQueueName, ManagementClient managementClient, ILogger? logger, IConfiguration configuration)
     {
         if (await managementClient.QueueExistsAsync(endpointQueueName)) return;
 
         logger?.LogInformation("Creating queue: `{queueName}`", endpointQueueName);
         await managementClient.CreateQueueAsync(endpointQueueName);
+
+        if (configuration.GetValue<string>("EnvironmentName") == "AT")
+            throw new Exception($"Created queue name {endpointQueueName}");
+
     }
 
     private static async Task CreateSubscription(string topicName, ManagementClient managementClient, string endpointQueueName, ILogger? logger)
