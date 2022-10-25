@@ -36,15 +36,15 @@ public class Startup : FunctionsStartup
         builder.Services.AddSingleton<IApimClientConfiguration>(x => x.GetRequiredService<TrackProgressApiOptions>());
 
         typeof(Startup).Assembly.AutoSubscribeToQueuesWithReflection(Configuration!).GetAwaiter().GetResult();
-        
-        //builder.UseNServiceBus((IConfiguration appConfiguration) =>
-        //{
-        //    var configuration = ServiceBusEndpointFactory.CreateSingleQueueConfiguration(QueueNames.TrackProgress, appConfiguration);
-        //    configuration.AdvancedConfiguration.UseNewtonsoftJsonSerializer();
-        //    configuration.AdvancedConfiguration.UseMessageConventions();
-        //    configuration.AdvancedConfiguration.EnableInstallers();
-        //    return configuration;
-        //});
+
+        builder.UseNServiceBus((IConfiguration appConfiguration) =>
+        {
+            var configuration = ServiceBusEndpointFactory.CreateSingleQueueConfiguration(QueueNames.TrackProgress, appConfiguration);
+            configuration.AdvancedConfiguration.UseNewtonsoftJsonSerializer();
+            configuration.AdvancedConfiguration.UseMessageConventions();
+            configuration.AdvancedConfiguration.EnableInstallers();
+            return configuration;
+        });
 
         builder.Services.AddSingleton<IApimClientConfiguration>(x => x.GetRequiredService<TrackProgressApiOptions>());
         builder.Services.AddTransient<Http.MessageHandlers.DefaultHeadersHandler>();

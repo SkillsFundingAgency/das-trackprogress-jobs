@@ -7,17 +7,27 @@ public static class ServiceBusEndpointFactory
 {
     public static ServiceBusTriggeredEndpointConfiguration CreateSingleQueueConfiguration(string endpointAndQueueName, IConfiguration appConfiguration)
     {
+        try
+        {
+            var configuration = new ServiceBusTriggeredEndpointConfiguration(
+                endpointName: endpointAndQueueName,
+                configuration: appConfiguration);
 
-        var configuration = new ServiceBusTriggeredEndpointConfiguration(
-            endpointName: endpointAndQueueName,
-            configuration: appConfiguration);
+            configuration.AdvancedConfiguration.SendFailedMessagesTo($"{endpointAndQueueName}-error");
+            configuration.AdvancedConfiguration.Pipeline.Register(new LogIncomingBehaviour(),
+                nameof(LogIncomingBehaviour));
+            configuration.AdvancedConfiguration.Pipeline.Register(new LogOutgoingBehaviour(),
+                nameof(LogOutgoingBehaviour));
 
-        configuration.AdvancedConfiguration.SendFailedMessagesTo($"{endpointAndQueueName}-error");
-        configuration.AdvancedConfiguration.Pipeline.Register(new LogIncomingBehaviour(), nameof(LogIncomingBehaviour));
-        configuration.AdvancedConfiguration.Pipeline.Register(new LogOutgoingBehaviour(), nameof(LogOutgoingBehaviour));
+            configuration.Transport.SubscriptionRuleNamingConvention(AzureRuleNameShortener.Shorten);
 
-        configuration.Transport.SubscriptionRuleNamingConvention(AzureRuleNameShortener.Shorten);
+            return configuration;
 
-        return configuration;
+        }
+        catch (Exception e)
+        {
+            throw new Exception($"Create Single Queue Configuration {e.Message}", e);
+        }
+
     }
 }
