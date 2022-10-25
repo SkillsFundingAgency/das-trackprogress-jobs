@@ -18,10 +18,8 @@ public static class AssemblyExtensions
     {
         var connectionString = configuration.GetValue<string>(connectionStringName);
 
-        if (connectionString == null)
-        {
-            throw new Exception("AzureWebJobsServiceBus could not be found");
-        }
+        if(configuration.GetValue<string>("EnvironmentName") == "AT")
+            throw new Exception($"AzureWebJobsServiceBus value is '{connectionString}'");
 
         var managementClient = new ManagementClient(connectionString);
         await CreateQueuesWithReflection(myAssembly, managementClient, errorQueue, topicName, logger);
