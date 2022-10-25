@@ -12,7 +12,12 @@ public static class FunctionsConfigurationBuilderExtension
         var preConfig = builder.ConfigurationBuilder.Build();
 
         var key = $"{connectionStringName}__fullyQualifiedNamespace";
+
         var serviceBusNamespace = preConfig.GetValue<string>(key);
+
+        if (serviceBusNamespace == null)
+            throw new Exception($"{key} was not found, will add wrong value");
+
         if (serviceBusNamespace != null)
         {
             builder.ConfigurationBuilder.AddInMemoryCollection(
