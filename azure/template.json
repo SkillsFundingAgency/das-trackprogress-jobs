@@ -250,6 +250,14 @@
                                     "value": "[variables('configNames')]"
                                 },
                                 {
+                                    "name": "AzureWebJobsServiceBus__fullyQualifiedNamespace",
+                                    "value": "das-at-shared-ns.servicebus.windows.net"
+                                },
+                                {
+                                    "name": "ServiceBusConnection__fullyQualifiedNamespace ",
+                                    "value": "das-at-shared-ns.servicebus.windows.net"
+                                },
+                                {
                                     "name": "Version",
                                     "value": "1.0"
                                 },
