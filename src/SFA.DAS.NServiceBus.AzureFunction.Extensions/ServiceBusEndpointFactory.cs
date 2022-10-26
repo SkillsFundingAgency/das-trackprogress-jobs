@@ -20,7 +20,7 @@ public static class ServiceBusEndpointFactory
             configuration.AdvancedConfiguration.Pipeline.Register(new LogOutgoingBehaviour(),
                 nameof(LogOutgoingBehaviour));
 
-            configuration.Transport.ConnectionString(appConfiguration.GetValue<string>("AzureWebJobsServiceBus__fullyQualifiedNamespace"));
+            configuration.Transport.ConnectionString(appConfiguration.GetValue<string>("AzureWebJobsServiceBus"));
             configuration.Transport.CustomTokenCredential(new DefaultAzureCredential());
             configuration.AdvancedConfiguration.License(appConfiguration.GetValue<string>("NServiceBusLicense"));
 
