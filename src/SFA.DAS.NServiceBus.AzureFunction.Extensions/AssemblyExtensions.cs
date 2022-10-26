@@ -1,4 +1,6 @@
 ﻿using System.Reflection;
+using Azure.Identity;
+using Azure.Messaging.ServiceBus.Administration;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.ServiceBus.Management;
 using Microsoft.Azure.WebJobs;
@@ -10,7 +12,7 @@ namespace SFA.DAS.NServiceBus.AzureFunction.Extensions;
 public static class AssemblyExtensions
 {
     public static async Task AutoSubscribeToQueuesWithReflection(this Assembly myAssembly,
-        IConfiguration configuration,
+        IConfiguration configuration, bool useManagedIdentity,
         string connectionStringName = "AzureWebJobsServiceBus",
         string? errorQueue = null,
         string topicName = "bundle-1",
@@ -18,9 +20,14 @@ public static class AssemblyExtensions
     {
         try
         {
-            var connectionString = configuration.GetValue<string>(connectionStringName);
+            var connectionString = useManagedIdentity ? configuration.GetValue<string>("AzureWebJobsServiceBus__fullyQualifiedNamespace") : configuration.GetValue<string>(connectionStringName);
 
-            var managementClient = new ManagementClient(connectionString);
+            ServiceBusAdministrationClient managementClient;
+            if(useManagedIdentity)
+                managementClient = new ServiceBusAdministrationClient(connectionString, new DefaultAzureCredential());
+            else
+                managementClient = new ServiceBusAdministrationClient(connectionString);
+
             await CreateQueuesWithReflection(myAssembly, managementClient, errorQueue, topicName, logger);
         }
         catch (Exception e)
@@ -31,7 +38,7 @@ public static class AssemblyExtensions
     }
 
     private static async Task CreateQueuesWithReflection(Assembly myAssembly,
-        ManagementClient managementClient,
+        ServiceBusAdministrationClient managementClient,
         string? errorQueue = null,
         string topicName = "bundle-1",
         ILogger? logger = null)
@@ -57,7 +64,7 @@ public static class AssemblyExtensions
         await CreateSubscription(topicName, managementClient, endpointQueueName, logger);
     }
 
-    private static async Task CreateQueue(string endpointQueueName, ManagementClient managementClient, ILogger? logger)
+    private static async Task CreateQueue(string endpointQueueName, ServiceBusAdministrationClient managementClient, ILogger? logger)
     {
         if (await managementClient.QueueExistsAsync(endpointQueueName)) return;
 
@@ -65,20 +72,22 @@ public static class AssemblyExtensions
         await managementClient.CreateQueueAsync(endpointQueueName);
     }
 
-    private static async Task CreateSubscription(string topicName, ManagementClient managementClient, string endpointQueueName, ILogger? logger)
+    private static async Task CreateSubscription(string topicName, ServiceBusAdministrationClient managementClient, string endpointQueueName, ILogger? logger)
     {
         if (await managementClient.SubscriptionExistsAsync(topicName, endpointQueueName)) return;
 
         logger?.LogInformation($"Creating subscription to: `{endpointQueueName}`", endpointQueueName);
 
-        var description = new SubscriptionDescription(topicName, endpointQueueName)
+        var createSubscriptionOptions = new CreateSubscriptionOptions(topicName, endpointQueueName)
         {
             ForwardTo = endpointQueueName,
             UserMetadata = $"Subscribed to {endpointQueueName}"
         };
+        var createRuleOptions = new CreateRuleOptions()
+        {
+            Filter = new FalseRuleFilter()
+        };
 
-        var ignoreAllEvents = new RuleDescription { Filter = new FalseFilter() };
-
-        await managementClient.CreateSubscriptionAsync(description, ignoreAllEvents);
+        await managementClient.CreateSubscriptionAsync(createSubscriptionOptions, createRuleOptions);
     }
 }

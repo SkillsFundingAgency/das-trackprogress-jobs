@@ -31,6 +31,8 @@ public class Startup : FunctionsStartup
     {
         Configuration = builder.GetContext().Configuration;
 
+        var useManagedIdentity = !Configuration.IsLocalAcceptanceOrDev();
+
         builder.Services.AddApplicationInsightsTelemetry();
         builder.Services.AddLogging();
 
@@ -38,7 +40,7 @@ public class Startup : FunctionsStartup
         builder.Services.ConfigureFromOptions(f => f.TrackProgressInternalApi);
         builder.Services.AddSingleton<IApimClientConfiguration>(x => x.GetRequiredService<TrackProgressApiOptions>());
 
-        typeof(Startup).Assembly.AutoSubscribeToQueuesWithReflection(Configuration!).GetAwaiter().GetResult();
+        typeof(Startup).Assembly.AutoSubscribeToQueuesWithReflection(Configuration!, useManagedIdentity).GetAwaiter().GetResult();
 
         if (!Configuration.IsLocalAcceptanceOrDev())
         {
@@ -49,7 +51,7 @@ public class Startup : FunctionsStartup
         {
             try
             {
-                var configuration = ServiceBusEndpointFactory.CreateSingleQueueConfiguration(QueueNames.TrackProgress, appConfiguration, !Configuration.IsLocalAcceptanceOrDev());
+                var configuration = ServiceBusEndpointFactory.CreateSingleQueueConfiguration(QueueNames.TrackProgress, appConfiguration, useManagedIdentity);
                 configuration.AdvancedConfiguration.UseNewtonsoftJsonSerializer();
                 configuration.AdvancedConfiguration.UseMessageConventions();
                 configuration.AdvancedConfiguration.EnableInstallers();
