@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Reflection;
+using Azure.Identity;
+using Azure.Messaging.ServiceBus;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,6 +39,11 @@ public class Startup : FunctionsStartup
         builder.Services.AddSingleton<IApimClientConfiguration>(x => x.GetRequiredService<TrackProgressApiOptions>());
 
         typeof(Startup).Assembly.AutoSubscribeToQueuesWithReflection(Configuration!).GetAwaiter().GetResult();
+
+        if (!Configuration.IsLocalAcceptanceOrDev())
+        {
+            builder.Services.AddSingleton(new ServiceBusClient(Configuration["AzureWebJobsServiceBus__fullyQualifiedNamespace"], new DefaultAzureCredential()));
+        }
 
         builder.UseNServiceBus((IConfiguration appConfiguration) =>
         {
