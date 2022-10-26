@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Azure.Identity;
+using Microsoft.Extensions.Configuration;
 using NServiceBus;
 
 namespace SFA.DAS.NServiceBus.AzureFunction.Extensions;
@@ -18,6 +19,9 @@ public static class ServiceBusEndpointFactory
                 nameof(LogIncomingBehaviour));
             configuration.AdvancedConfiguration.Pipeline.Register(new LogOutgoingBehaviour(),
                 nameof(LogOutgoingBehaviour));
+
+            configuration.Transport.ConnectionString(appConfiguration.GetValue<string>("AzureWebJobsServiceBus__fullyQualifiedNamespace"));
+            configuration.Transport.CustomTokenCredential(new DefaultAzureCredential());
 
             configuration.Transport.SubscriptionRuleNamingConvention(AzureRuleNameShortener.Shorten);
 
