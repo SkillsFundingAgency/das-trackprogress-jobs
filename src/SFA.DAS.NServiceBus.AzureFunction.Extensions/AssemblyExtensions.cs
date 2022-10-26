@@ -21,7 +21,7 @@ public static class AssemblyExtensions
             var connectionString = configuration.GetValue<string>(connectionStringName);
 
             var managementClient = new ManagementClient(connectionString);
-            await CreateQueuesWithReflection(myAssembly, managementClient, configuration, errorQueue, topicName, logger);
+            await CreateQueuesWithReflection(myAssembly, managementClient, errorQueue, topicName, logger);
 
         }
         catch (Exception e)
@@ -33,7 +33,6 @@ public static class AssemblyExtensions
 
     private static async Task CreateQueuesWithReflection(Assembly myAssembly,
         ManagementClient managementClient,
-        IConfiguration configuration,
         string? errorQueue = null,
         string topicName = "bundle-1",
         ILogger? logger = null)
@@ -53,22 +52,18 @@ public static class AssemblyExtensions
 
         errorQueue ??= $"{endpointQueueName}-error";
 
-        await CreateQueue(endpointQueueName, managementClient, logger, configuration);
-        await CreateQueue(errorQueue, managementClient, logger, configuration);
+        await CreateQueue(endpointQueueName, managementClient, logger);
+        await CreateQueue(errorQueue, managementClient, logger);
 
         await CreateSubscription(topicName, managementClient, endpointQueueName, logger);
     }
 
-    private static async Task CreateQueue(string endpointQueueName, ManagementClient managementClient, ILogger? logger, IConfiguration configuration)
+    private static async Task CreateQueue(string endpointQueueName, ManagementClient managementClient, ILogger? logger)
     {
         if (await managementClient.QueueExistsAsync(endpointQueueName)) return;
 
         logger?.LogInformation("Creating queue: `{queueName}`", endpointQueueName);
         await managementClient.CreateQueueAsync(endpointQueueName);
-
-        if (configuration.GetValue<string>("EnvironmentName") == "AT")
-            throw new Exception($"Created queue name {endpointQueueName}");
-
     }
 
     private static async Task CreateSubscription(string topicName, ManagementClient managementClient, string endpointQueueName, ILogger? logger)
