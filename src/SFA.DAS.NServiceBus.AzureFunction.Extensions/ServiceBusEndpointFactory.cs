@@ -22,6 +22,7 @@ public static class ServiceBusEndpointFactory
 
             configuration.Transport.ConnectionString(appConfiguration.GetValue<string>("AzureWebJobsServiceBus__fullyQualifiedNamespace"));
             configuration.Transport.CustomTokenCredential(new DefaultAzureCredential());
+            configuration.AdvancedConfiguration.License(appConfiguration.GetValue<string>("NServiceBusLicense"));
 
             configuration.Transport.SubscriptionRuleNamingConvention(AzureRuleNameShortener.Shorten);
 
