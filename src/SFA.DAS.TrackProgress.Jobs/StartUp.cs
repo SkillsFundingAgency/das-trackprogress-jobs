@@ -38,23 +38,23 @@ public class Startup : FunctionsStartup
 
         typeof(Startup).Assembly.AutoSubscribeToQueuesWithReflection(Configuration!).GetAwaiter().GetResult();
 
-        builder.UseNServiceBus((IConfiguration appConfiguration) =>
-        {
-            try
-            {
-                var configuration =
-                    ServiceBusEndpointFactory.CreateSingleQueueConfiguration(QueueNames.TrackProgress,
-                        appConfiguration);
-                configuration.AdvancedConfiguration.UseNewtonsoftJsonSerializer();
-                configuration.AdvancedConfiguration.UseMessageConventions();
-                configuration.AdvancedConfiguration.EnableInstallers();
-                return configuration;
-            }
-            catch (Exception e)
-            {
-                throw new Exception($"Problem configuring NSB {e.Message}", e);
-            }
-        });
+        //builder.UseNServiceBus((IConfiguration appConfiguration) =>
+        //{
+        //    try
+        //    {
+        //        var configuration =
+        //            ServiceBusEndpointFactory.CreateSingleQueueConfiguration(QueueNames.TrackProgress,
+        //                appConfiguration);
+        //        configuration.AdvancedConfiguration.UseNewtonsoftJsonSerializer();
+        //        configuration.AdvancedConfiguration.UseMessageConventions();
+        //        configuration.AdvancedConfiguration.EnableInstallers();
+        //        return configuration;
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw new Exception($"Problem configuring NSB {e.Message}", e);
+        //    }
+        //});
 
         builder.Services.AddSingleton<IApimClientConfiguration>(x => x.GetRequiredService<TrackProgressApiOptions>());
         builder.Services.AddTransient<Http.MessageHandlers.DefaultHeadersHandler>();

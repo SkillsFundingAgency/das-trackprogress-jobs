@@ -23,6 +23,9 @@ public static class AssemblyExtensions
             var managementClient = new ManagementClient(connectionString);
             await CreateQueuesWithReflection(myAssembly, managementClient, errorQueue, topicName, logger);
 
+            if (configuration.GetValue<string>("EnvironmentName") == "AT")
+                throw new Exception("Queues should have been created");
+
         }
         catch (Exception e)
         {
