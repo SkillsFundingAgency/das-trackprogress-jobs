@@ -42,9 +42,7 @@ public class Startup : FunctionsStartup
         {
             try
             {
-                var configuration =
-                    ServiceBusEndpointFactory.CreateSingleQueueConfiguration(QueueNames.TrackProgress,
-                        appConfiguration);
+                var configuration = ServiceBusEndpointFactory.CreateSingleQueueConfiguration(QueueNames.TrackProgress, appConfiguration, !Configuration.IsLocalAcceptanceOrDev());
                 configuration.AdvancedConfiguration.UseNewtonsoftJsonSerializer();
                 configuration.AdvancedConfiguration.UseMessageConventions();
                 configuration.AdvancedConfiguration.EnableInstallers();

@@ -6,7 +6,7 @@ namespace SFA.DAS.NServiceBus.AzureFunction.Extensions;
 
 public static class ServiceBusEndpointFactory
 {
-    public static ServiceBusTriggeredEndpointConfiguration CreateSingleQueueConfiguration(string endpointAndQueueName, IConfiguration appConfiguration)
+    public static ServiceBusTriggeredEndpointConfiguration CreateSingleQueueConfiguration(string endpointAndQueueName, IConfiguration appConfiguration, bool useManagedIdentity)
     {
         try
         {
@@ -20,9 +20,12 @@ public static class ServiceBusEndpointFactory
             configuration.AdvancedConfiguration.Pipeline.Register(new LogOutgoingBehaviour(),
                 nameof(LogOutgoingBehaviour));
 
-            configuration.Transport.ConnectionString(appConfiguration.GetValue<string>("AzureWebJobsServiceBus__fullyQualifiedNamespace"));
-            configuration.Transport.CustomTokenCredential(new DefaultAzureCredential());
-            configuration.AdvancedConfiguration.License(appConfiguration.GetValue<string>("NServiceBusLicense"));
+            if (useManagedIdentity)
+            {
+                configuration.Transport.ConnectionString(appConfiguration.GetValue<string>("AzureWebJobsServiceBus__fullyQualifiedNamespace"));
+                configuration.Transport.CustomTokenCredential(new DefaultAzureCredential());
+                configuration.AdvancedConfiguration.License(appConfiguration.GetValue<string>("NServiceBusLicense"));
+            }
 
             configuration.Transport.SubscriptionRuleNamingConvention(AzureRuleNameShortener.Shorten);
 
