@@ -30,7 +30,8 @@ internal class ServiceBusTriggerNonAtomicEntryPoint
         ServiceBusClient client, ServiceBusMessageActions messageActions, ILogger logger, ExecutionContext context)
     {
         logger.LogInformation("FullyQualifiedNameSpace {0}", client?.FullyQualifiedNamespace);
-        return endpoint.ProcessAtomic(message, context, client, messageActions, logger);
+        return Task.CompletedTask;
+        //return endpoint.ProcessAtomic(message, context, client, messageActions, logger);
 
     }
 
