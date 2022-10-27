@@ -10,13 +10,10 @@ namespace SFA.DAS.TrackProgress.Jobs.Infrastructure;
 internal class ServiceBusTriggerNonAtomicEntryPoint
 {
     private readonly IFunctionEndpoint endpoint;
-    private readonly ILogger _logger;
 
-    public ServiceBusTriggerNonAtomicEntryPoint(IFunctionEndpoint endpoint, ILogger logger)
+    public ServiceBusTriggerNonAtomicEntryPoint(IFunctionEndpoint endpoint)
     {
         this.endpoint = endpoint;
-        _logger = logger;
-        _logger.LogInformation("ServiceBusTriggerNonAtomicEntryPoint constructor created");
     }
 
     //[FunctionName("TrackProcessJobsWithClient")]
@@ -39,7 +36,7 @@ internal class ServiceBusTriggerNonAtomicEntryPoint
     //    await endpoint.ProcessNonAtomic(message, context, logger);
     //}
 
-    [FunctionName("TrackProcessJobsAJobs")]
+    [FunctionName("TrackProcessJobsAJobsWithLogger")]
     public async Task Run(
         [ServiceBusTrigger(queueName: QueueNames.TrackProgress, Connection = "AJobsServiceBus")] ServiceBusReceivedMessage message,
         ILogger logger,
