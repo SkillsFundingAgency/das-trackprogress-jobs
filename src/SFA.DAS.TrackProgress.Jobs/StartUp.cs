@@ -44,7 +44,7 @@ public class Startup : FunctionsStartup
 
         if (!Configuration.IsLocalAcceptanceOrDev())
         {
-            builder.Services.AddSingleton(new ServiceBusClient(Configuration["AzureWebJobsServiceBus__fullyQualifiedNamespace"], new DefaultAzureCredential()));
+            builder.Services.AddSingleton<ServiceBusClient>(new ServiceBusClient(Configuration["AzureWebJobsServiceBus__fullyQualifiedNamespace"], new DefaultAzureCredential()));
         }
 
         builder.UseNServiceBus((IConfiguration appConfiguration) =>

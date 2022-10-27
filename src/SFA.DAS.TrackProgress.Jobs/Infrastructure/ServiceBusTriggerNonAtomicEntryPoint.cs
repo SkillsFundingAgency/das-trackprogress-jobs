@@ -16,7 +16,7 @@ internal class ServiceBusTriggerNonAtomicEntryPoint
         this.endpoint = endpoint;
     }
 
-    [FunctionName("TrackProcessJobs")]
+    //[FunctionName("TrackProcessJobs")]
     //public Task Run(
     //    [ServiceBusTrigger(QueueNames.TrackProgress, AutoCompleteMessages = false)] ServiceBusReceivedMessage message,
     //    ServiceBusClient client, ServiceBusMessageActions messageActions, ILogger logger, ExecutionContext context)
@@ -26,11 +26,24 @@ internal class ServiceBusTriggerNonAtomicEntryPoint
 
     //}
 
+    //public async Task Run(
+    //    [ServiceBusTrigger(queueName: QueueNames.TrackProgress, Connection = "AzureWebJobsServiceBus")] ServiceBusReceivedMessage message,
+    //    ILogger logger,
+    //    ExecutionContext context)
+    //{
+    //    await endpoint.ProcessNonAtomic(message, context, logger);
+    //}
+
+    [FunctionName("ProcessMessage")]
     public async Task Run(
-        [ServiceBusTrigger(queueName: QueueNames.TrackProgress, Connection = "AzureWebJobsServiceBus")] ServiceBusReceivedMessage message,
+        // Setting AutoComplete to true (the default) processes the message non-transactionally
+        [ServiceBusTrigger(QueueNames.TrackProgress, AutoCompleteMessages = true)]
+        ServiceBusReceivedMessage message,
         ILogger logger,
-        ExecutionContext context)
+        ExecutionContext executionContext)
     {
-        await endpoint.ProcessNonAtomic(message, context, logger);
+        logger.LogInformation("Processing of message started");
+        await endpoint.ProcessNonAtomic(message, executionContext, logger);
     }
+
 }
