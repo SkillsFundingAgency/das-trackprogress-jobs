@@ -12,14 +12,19 @@ internal class ServiceBusTriggerNonAtomicEntryPoint
     private readonly IFunctionEndpoint endpoint;
     private readonly ILogger _logger;
 
-    public ServiceBusTriggerNonAtomicEntryPoint(IFunctionEndpoint endpoint, ILogger logger)
+    public ServiceBusTriggerNonAtomicEntryPoint()
     {
-        this.endpoint = endpoint;
-        _logger = logger;
-        _logger.LogInformation("ServiceBusTriggerNonAtomicEntryPoint constructor created");
     }
 
-    [FunctionName("TrackProcessJobs")]
+
+    //public ServiceBusTriggerNonAtomicEntryPoint(IFunctionEndpoint endpoint, ILogger logger)
+    //{
+    //    this.endpoint = endpoint;
+    //    _logger = logger;
+    //    _logger.LogInformation("ServiceBusTriggerNonAtomicEntryPoint constructor created");
+    //}
+
+    [FunctionName("TrackProcessJobsWithClient")]
     public Task Run(
         [ServiceBusTrigger(QueueNames.TrackProgress)] ServiceBusReceivedMessage message,
         ServiceBusClient client, ServiceBusMessageActions messageActions, ILogger logger, ExecutionContext context)
