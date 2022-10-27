@@ -10,30 +10,33 @@ namespace SFA.DAS.TrackProgress.Jobs.Infrastructure;
 internal class ServiceBusTriggerNonAtomicEntryPoint
 {
     private readonly IFunctionEndpoint endpoint;
+    private readonly ILogger _logger;
 
-    public ServiceBusTriggerNonAtomicEntryPoint(IFunctionEndpoint endpoint)
+    public ServiceBusTriggerNonAtomicEntryPoint(IFunctionEndpoint endpoint, ILogger logger)
     {
         this.endpoint = endpoint;
+        _logger = logger;
+        _logger.LogInformation("ServiceBusTriggerNonAtomicEntryPoint constructor created");
+    }
+
+    [FunctionName("TrackProcessJobs")]
+    public Task Run(
+        [ServiceBusTrigger(QueueNames.TrackProgress)] ServiceBusReceivedMessage message,
+        ServiceBusClient client, ServiceBusMessageActions messageActions, ILogger logger, ExecutionContext context)
+    {
+        logger.LogInformation("FullyQualifiedNameSpace {0}", client?.FullyQualifiedNamespace);
+        return endpoint.ProcessAtomic(message, context, client, messageActions, logger);
+
     }
 
     //[FunctionName("TrackProcessJobs")]
-    //public Task Run(
-    //    [ServiceBusTrigger(QueueNames.TrackProgress, AutoCompleteMessages = false)] ServiceBusReceivedMessage message,
-    //    ServiceBusClient client, ServiceBusMessageActions messageActions, ILogger logger, ExecutionContext context)
+    //public async Task Run(
+    //    [ServiceBusTrigger(queueName: QueueNames.TrackProgress, Connection = "AzureWebJobsServiceBus")] ServiceBusReceivedMessage message,
+    //    ILogger logger,
+    //    ExecutionContext context)
     //{
-    //    logger.LogInformation("FullyQualifiedNameSpace {0}", client?.FullyQualifiedNamespace);
-    //    return endpoint.ProcessAtomic(message, context, client, messageActions, logger);
-
+    //    await endpoint.ProcessNonAtomic(message, context, logger);
     //}
-
-    [FunctionName("TrackProcessJobs")]
-    public async Task Run(
-        [ServiceBusTrigger(queueName: QueueNames.TrackProgress, Connection = "AzureWebJobsServiceBus")] ServiceBusReceivedMessage message,
-        ILogger logger,
-        ExecutionContext context)
-    {
-        await endpoint.ProcessNonAtomic(message, context, logger);
-    }
 
     //[FunctionName("TrackProcessJobsFQ")]
     //public async Task Run(
