@@ -258,6 +258,10 @@
                                     "value": "[reference(concat(variables('functionAppName'), '-application-insights-', parameters('utcValue'))).outputs.ConnectionString.value]"
                                 },
                                 {
+                                    "name": "AzureWebJobsServiceBus__fullyQualifiedNamespace",
+                                    "value": "das-at-shared-ns.servicebus.windows.net"
+                                },
+                                {
                                     "name": "AzureWebJobsStorage",
                                     "value": "[parameters('sharedStorageAccountConnectionString')]"
                                 },
