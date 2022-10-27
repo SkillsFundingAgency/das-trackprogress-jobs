@@ -258,12 +258,8 @@
                                     "value": "[reference(concat(variables('functionAppName'), '-application-insights-', parameters('utcValue'))).outputs.ConnectionString.value]"
                                 },
                                 {
-                                    "name": "AzureWebJobsServiceBus__fullyQualifiedNamespace",
+                                    "name": "AJobsServiceBus__fullyQualifiedNamespace",
                                     "value": "das-at-shared-ns.servicebus.windows.net"
-                                },
-                                {
-                                    "name": "AJobsServiceBus",
-                                    "value": "Endpoint=sb://das-at-shared-ns.servicebus.windows.net/;Authentication=Managed Identity;"
                                 },
                                 {
                                     "name": "AzureWebJobsStorage",
