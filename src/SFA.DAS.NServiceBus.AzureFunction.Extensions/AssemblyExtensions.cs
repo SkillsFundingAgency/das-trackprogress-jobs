@@ -1,8 +1,6 @@
 ﻿using System.Reflection;
 using Azure.Identity;
 using Azure.Messaging.ServiceBus.Administration;
-using Microsoft.Azure.ServiceBus;
-using Microsoft.Azure.ServiceBus.Management;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;

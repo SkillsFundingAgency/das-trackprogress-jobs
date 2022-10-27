@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Reflection;
 using Azure.Identity;
 using Azure.Messaging.ServiceBus;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using NServiceBus;
 using RestEase.HttpClientFactory;
 using SFA.DAS.Http.Configuration;
@@ -42,11 +40,6 @@ public class Startup : FunctionsStartup
 
         typeof(Startup).Assembly.AutoSubscribeToQueuesWithReflection(Configuration!, useManagedIdentity).GetAwaiter().GetResult();
 
-        if (!Configuration.IsLocalAcceptanceOrDev())
-        {
-            builder.Services.AddSingleton<ServiceBusClient>(new ServiceBusClient(Configuration["AzureWebJobsServiceBus__fullyQualifiedNamespace"], new DefaultAzureCredential()));
-        }
-
         builder.UseNServiceBus((IConfiguration appConfiguration) =>
         {
             try
@@ -62,6 +55,11 @@ public class Startup : FunctionsStartup
                 throw new Exception($"Problem configuring NSB {e.Message}", e);
             }
         });
+
+        if (!Configuration.IsLocalAcceptanceOrDev())
+        {
+            builder.Services.AddSingleton<ServiceBusClient>(new ServiceBusClient(Configuration["AzureWebJobsServiceBus__fullyQualifiedNamespace"], new DefaultAzureCredential()));
+        }
 
         builder.Services.AddSingleton<IApimClientConfiguration>(x => x.GetRequiredService<TrackProgressApiOptions>());
         builder.Services.AddTransient<Http.MessageHandlers.DefaultHeadersHandler>();

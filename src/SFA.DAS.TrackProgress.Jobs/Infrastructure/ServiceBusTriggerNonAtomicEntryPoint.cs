@@ -56,4 +56,11 @@ internal class ServiceBusTriggerNonAtomicEntryPoint
     //    await endpoint.ProcessNonAtomic(message, executionContext, logger);
     //}
 
+    //[FunctionName("ProcessMessageWithI")]
+    //public Task Run([ServiceBusTrigger(QueueNames.TrackProgress, AutoCompleteMessages = false)] ServiceBusReceivedMessage message, IMyServiceBusClient client, ServiceBusMessageActions messageActions, ILogger logger, ExecutionContext executionContext)
+    //{
+    //    logger.LogInformation("IProcessed it");
+    //    return Task.CompletedTask;
+    //    //return endpoint.ProcessAtomic(message, executionContext, client, messageActions, logger);
+    //}
 }
