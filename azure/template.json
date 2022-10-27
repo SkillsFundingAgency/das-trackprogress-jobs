@@ -262,6 +262,10 @@
                                     "value": "das-at-shared-ns.servicebus.windows.net"
                                 },
                                 {
+                                    "name": "AJobsServiceBus",
+                                    "value": "Endpoint=sb://das-at-shared-ns.servicebus.windows.net/;Authentication=Managed Identity;"
+                                },
+                                {
                                     "name": "AzureWebJobsStorage",
                                     "value": "[parameters('sharedStorageAccountConnectionString')]"
                                 },
