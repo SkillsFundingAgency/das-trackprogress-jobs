@@ -56,10 +56,10 @@ public class Startup : FunctionsStartup
             }
         });
 
-        if (!Configuration.IsLocalAcceptanceOrDev())
-        {
-            builder.Services.AddSingleton<ServiceBusClient>(new ServiceBusClient(Configuration["AzureWebJobsServiceBus__fullyQualifiedNamespace"], new DefaultAzureCredential()));
-        }
+        //if (!Configuration.IsLocalAcceptanceOrDev())
+        //{
+        //    builder.Services.AddSingleton<ServiceBusClient>(new ServiceBusClient(Configuration["AzureWebJobsServiceBus__fullyQualifiedNamespace"], new DefaultAzureCredential()));
+        //}
 
         builder.Services.AddSingleton<IApimClientConfiguration>(x => x.GetRequiredService<TrackProgressApiOptions>());
         builder.Services.AddTransient<Http.MessageHandlers.DefaultHeadersHandler>();
