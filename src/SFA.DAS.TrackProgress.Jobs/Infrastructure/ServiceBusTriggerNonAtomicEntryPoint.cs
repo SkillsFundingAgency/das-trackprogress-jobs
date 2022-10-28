@@ -38,7 +38,7 @@ internal class ServiceBusTriggerNonAtomicEntryPoint
 
     [FunctionName("TrackProcessJobsAJobsWithLogger")]
     public async Task Run(
-        [ServiceBusTrigger(queueName: QueueNames.TrackProgress, Connection = "AJobsServiceBus")] ServiceBusReceivedMessage message,
+        [ServiceBusTrigger(queueName: QueueNames.TrackProgress, Connection = "AzureWebJobsServiceBus")] ServiceBusReceivedMessage message,
         ILogger logger,
         ExecutionContext context)
     {

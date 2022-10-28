@@ -1,6 +1,7 @@
 ﻿using Azure.Identity;
 using Microsoft.Extensions.Configuration;
 using NServiceBus;
+using SFA.DAS.NServiceBus.Extensions;
 
 namespace SFA.DAS.NServiceBus.AzureFunction.Extensions;
 
@@ -15,16 +16,14 @@ public static class ServiceBusEndpointFactory
                 configuration: appConfiguration);
 
             configuration.AdvancedConfiguration.SendFailedMessagesTo($"{endpointAndQueueName}-error");
-            configuration.AdvancedConfiguration.Pipeline.Register(new LogIncomingBehaviour(),
-                nameof(LogIncomingBehaviour));
-            configuration.AdvancedConfiguration.Pipeline.Register(new LogOutgoingBehaviour(),
-                nameof(LogOutgoingBehaviour));
+            configuration.AdvancedConfiguration.Pipeline.Register(new LogIncomingBehaviour(), nameof(LogIncomingBehaviour));
+            configuration.AdvancedConfiguration.Pipeline.Register(new LogOutgoingBehaviour(), nameof(LogOutgoingBehaviour));
 
             if (useManagedIdentity)
             {
-                configuration.Transport.ConnectionString(appConfiguration.GetValue<string>("AzureWebJobsServiceBus__fullyQualifiedNamespace"));
+                configuration.Transport.ConnectionString(appConfiguration.NServiceBusFullNamespace());
                 configuration.Transport.CustomTokenCredential(new DefaultAzureCredential());
-                configuration.AdvancedConfiguration.License(appConfiguration.GetValue<string>("NServiceBusLicense"));
+                configuration.AdvancedConfiguration.License(appConfiguration.NServiceBusLicense());
             }
 
             configuration.Transport.SubscriptionRuleNamingConvention(AzureRuleNameShortener.Shorten);

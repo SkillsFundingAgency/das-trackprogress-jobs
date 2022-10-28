@@ -1,6 +1,4 @@
 ﻿using System;
-using Azure.Identity;
-using Azure.Messaging.ServiceBus;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,14 +20,13 @@ public class Startup : FunctionsStartup
     public override void ConfigureAppConfiguration(IFunctionsConfigurationBuilder builder)
     {
         builder.ConfigureConfiguration();
-        builder.ConfigureServiceBusManagedIdentity();
     }
 
     public override void Configure(IFunctionsHostBuilder builder)
     {
         Configuration = builder.GetContext().Configuration;
 
-        var useManagedIdentity = !Configuration.IsLocalAcceptanceOrDev();
+        var useManagedIdentity = !Configuration.IsAcceptanceOrDev();
 
         builder.Services.AddApplicationInsightsTelemetry();
         builder.Services.AddLogging();
@@ -38,7 +35,7 @@ public class Startup : FunctionsStartup
         builder.Services.ConfigureFromOptions(f => f.TrackProgressInternalApi);
         builder.Services.AddSingleton<IApimClientConfiguration>(x => x.GetRequiredService<TrackProgressApiOptions>());
 
-        typeof(Startup).Assembly.AutoSubscribeToQueuesWithReflection(Configuration!, useManagedIdentity).GetAwaiter().GetResult();
+        InitialiseNServiceBus();
 
         builder.UseNServiceBus((IConfiguration appConfiguration) =>
         {
@@ -56,11 +53,6 @@ public class Startup : FunctionsStartup
             }
         });
 
-        //if (!Configuration.IsLocalAcceptanceOrDev())
-        //{
-        //    builder.Services.AddSingleton<ServiceBusClient>(new ServiceBusClient(Configuration["AzureWebJobsServiceBus__fullyQualifiedNamespace"], new DefaultAzureCredential()));
-        //}
-
         builder.Services.AddSingleton<IApimClientConfiguration>(x => x.GetRequiredService<TrackProgressApiOptions>());
         builder.Services.AddTransient<Http.MessageHandlers.DefaultHeadersHandler>();
         builder.Services.AddTransient<Http.MessageHandlers.LoggingMessageHandler>();
@@ -75,5 +67,12 @@ public class Startup : FunctionsStartup
             .AddHttpMessageHandler<Http.MessageHandlers.DefaultHeadersHandler>()
             .AddHttpMessageHandler<Http.MessageHandlers.ApimHeadersHandler>()
             .AddHttpMessageHandler<Http.MessageHandlers.LoggingMessageHandler>();
+    }
+
+    public void InitialiseNServiceBus()
+    {
+        var m = new NServiceBusResourceManager(Configuration, !Configuration.IsLocalAcceptanceOrDev());
+        m.CreateWorkAndErrorQueues(QueueNames.TrackProgress).GetAwaiter().GetResult();
+        m.SubscribeToTopicForQueue(typeof(Startup).Assembly, QueueNames.TrackProgress).GetAwaiter().GetResult();
     }
 }
