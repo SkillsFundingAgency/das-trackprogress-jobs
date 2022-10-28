@@ -77,6 +77,9 @@
         },
         "sharedServiceBusName": {
             "type": "string"
+        },
+        "sharedServiceBusFqdn": {
+            "type": "string"
         }
     },
     "variables": {
@@ -258,8 +261,8 @@
                                     "value": "[reference(concat(variables('functionAppName'), '-application-insights-', parameters('utcValue'))).outputs.ConnectionString.value]"
                                 },
                                 {
-                                    "name": "AJobsServiceBus__fullyQualifiedNamespace",
-                                    "value": "das-at-shared-ns.servicebus.windows.net"
+                                    "name": "AzureWebJobsServiceBus__fullyQualifiedNamespace",
+                                    "value": "[parameters('sharedServiceBusFqdn')]"
                                 },
                                 {
                                     "name": "AzureWebJobsStorage",
