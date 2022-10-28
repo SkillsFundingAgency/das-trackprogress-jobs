@@ -27,16 +27,7 @@ internal class ServiceBusTriggerNonAtomicEntryPoint
 
     //}
 
-    //[FunctionName("TrackProcessJobs")]
-    //public async Task Run(
-    //    [ServiceBusTrigger(queueName: QueueNames.TrackProgress, Connection = "AzureWebJobsServiceBus")] ServiceBusReceivedMessage message,
-    //    ILogger logger,
-    //    ExecutionContext context)
-    //{
-    //    await endpoint.ProcessNonAtomic(message, context, logger);
-    //}
-
-    [FunctionName("TrackProcessJobsAJobsWithLogger")]
+    [FunctionName("TrackProcessJobs")]
     public async Task Run(
         [ServiceBusTrigger(queueName: QueueNames.TrackProgress, Connection = "AzureWebJobsServiceBus")] ServiceBusReceivedMessage message,
         ILogger logger,
@@ -44,34 +35,4 @@ internal class ServiceBusTriggerNonAtomicEntryPoint
     {
         await endpoint.ProcessNonAtomic(message, context, logger);
     }
-
-
-    //[FunctionName("TrackProcessJobsFQ")]
-    //public async Task Run(
-    //    [ServiceBusTrigger(queueName: QueueNames.TrackProgress, Connection = "AzureWebJobsServiceBus__fullyQualifiedNamespace")] ServiceBusReceivedMessage message,
-    //    ILogger logger,
-    //    ExecutionContext context)
-    //{
-    //    await endpoint.ProcessNonAtomic(message, context, logger);
-    //}
-
-    //[FunctionName("ProcessMessage")]
-    //public async Task Run(
-    //    // Setting AutoComplete to true (the default) processes the message non-transactionally
-    //    [ServiceBusTrigger(QueueNames.TrackProgress, AutoCompleteMessages = true)]
-    //    ServiceBusReceivedMessage message,
-    //    ILogger logger,
-    //    ExecutionContext executionContext)
-    //{
-    //    logger.LogInformation("Processing of message started");
-    //    await endpoint.ProcessNonAtomic(message, executionContext, logger);
-    //}
-
-    //[FunctionName("ProcessMessageWithI")]
-    //public Task Run([ServiceBusTrigger(QueueNames.TrackProgress, AutoCompleteMessages = false)] ServiceBusReceivedMessage message, IMyServiceBusClient client, ServiceBusMessageActions messageActions, ILogger logger, ExecutionContext executionContext)
-    //{
-    //    logger.LogInformation("IProcessed it");
-    //    return Task.CompletedTask;
-    //    //return endpoint.ProcessAtomic(message, executionContext, client, messageActions, logger);
-    //}
 }
