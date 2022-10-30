@@ -16,22 +16,22 @@ internal class ServiceBusTriggerNonAtomicEntryPoint
         this.endpoint = endpoint;
     }
 
-    //[FunctionName("TrackProcessJobsWithClient")]
-    //public Task Run(
-    //    [ServiceBusTrigger(QueueNames.TrackProgress)] ServiceBusReceivedMessage message,
-    //    ServiceBusClient client, ServiceBusMessageActions messageActions, ILogger logger, ExecutionContext context)
-    //{
-    //    logger.LogInformation("FullyQualifiedNameSpace {0}", client?.FullyQualifiedNamespace);
-    //    return endpoint.ProcessAtomic(message, context, client, messageActions, logger);
-
-    //}
-
-    [FunctionName("TrackProcessJobsEntryPoint")]
-    public async Task Run(
-        [ServiceBusTrigger(queueName: QueueNames.TrackProgress, Connection = "AzureWebJobsServiceBus")] ServiceBusReceivedMessage message,
-        ILogger logger,
-        ExecutionContext context)
+    [FunctionName("TrackProcessJobsWithClient")]
+    public Task Run(
+        [ServiceBusTrigger(QueueNames.TrackProgress)] ServiceBusReceivedMessage message,
+        ServiceBusClient client, ServiceBusMessageActions messageActions, ILogger logger, ExecutionContext context)
     {
-        await endpoint.ProcessNonAtomic(message, context, logger);
+        logger.LogInformation("FullyQualifiedNameSpace {0} processing message", client?.FullyQualifiedNamespace);
+        return endpoint.ProcessAtomic(message, context, client, messageActions, logger);
+
     }
+
+    //[FunctionName("TrackProcessJobsEntryPoint")]
+    //public async Task Run(
+    //    [ServiceBusTrigger(queueName: QueueNames.TrackProgress, Connection = "AzureWebJobsServiceBus")] ServiceBusReceivedMessage message,
+    //    ILogger logger,
+    //    ExecutionContext context)
+    //{
+    //    await endpoint.ProcessNonAtomic(message, context, logger);
+    //}
 }
