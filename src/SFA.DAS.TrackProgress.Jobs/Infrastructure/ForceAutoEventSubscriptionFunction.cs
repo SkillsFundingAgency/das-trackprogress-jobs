@@ -6,7 +6,10 @@ using SFA.DAS.NServiceBus.AzureFunction.Extensions;
 
 namespace SFA.DAS.TrackProgress.Jobs.Infrastructure;
 
-public class ForceAutoEventSubscription : IMessage { }
+public class ForceAutoEventSubscription : IMessage
+{
+    public string StartupMessage { get; set; } = "Example";
+}
 
 public class ForceAutoEventSubscriptionFunction
 {

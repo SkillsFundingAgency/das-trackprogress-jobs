@@ -12,13 +12,12 @@
     <PackageReference Include="NServiceBus" Version="7.8.0" />
     <PackageReference Include="NServiceBus.Extensions.Hosting" Version="1.1.0" />
     <PackageReference Include="NServiceBus.Transport.AzureServiceBus" Version="2.0.3" />
-    <PackageReference Include="SFA.DAS.ApprenticeAccounts.Messages" Version="0.1.13" />
-    <PackageReference Include="SFA.DAS.TrackProgress.Messages" Version="0.1.5-prerelease-5" />
+    <PackageReference Include="SFA.DAS.TrackProgress.Messages" Version="0.1.5-prerelease-39" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\SFA.DAS.NServiceBus.Extensions\SFA.DAS.NServiceBus.Extensions.csproj" />
-    <ProjectReference Include="..\SFA.DAS.TrackProgress.jobs\SFA.DAS.TrackProgress.Jobs.csproj" />
+    <ProjectReference Include="..\SFA.DAS.TrackProgress.Jobs\SFA.DAS.TrackProgress.Jobs.csproj" />
   </ItemGroup>
 
   <ItemGroup>

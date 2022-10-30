@@ -1,8 +1,7 @@
-﻿using System.Reflection;
+﻿using System;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using NServiceBus;
 using RestEase.HttpClientFactory;
 using SFA.DAS.Http.Configuration;
@@ -21,13 +20,13 @@ public class Startup : FunctionsStartup
     public override void ConfigureAppConfiguration(IFunctionsConfigurationBuilder builder)
     {
         builder.ConfigureConfiguration();
-        builder.ConfigureServiceBusManagedIdentity();
     }
 
     public override void Configure(IFunctionsHostBuilder builder)
     {
-        var serviceProvider = builder.Services.BuildServiceProvider();
-        Configuration = serviceProvider.GetService<IConfiguration>();
+        Configuration = builder.GetContext().Configuration;
+
+        var useManagedIdentity = !Configuration.IsAcceptanceOrDev();
 
         builder.Services.AddApplicationInsightsTelemetry();
         builder.Services.AddLogging();
@@ -36,15 +35,22 @@ public class Startup : FunctionsStartup
         builder.Services.ConfigureFromOptions(f => f.TrackProgressInternalApi);
         builder.Services.AddSingleton<IApimClientConfiguration>(x => x.GetRequiredService<TrackProgressApiOptions>());
 
-        typeof(Startup).Assembly.AutoSubscribeToQueuesWithReflection(Configuration!).GetAwaiter().GetResult();
-        
+        InitialiseNServiceBus();
+
         builder.UseNServiceBus((IConfiguration appConfiguration) =>
         {
-            var configuration = ServiceBusEndpointFactory.CreateSingleQueueConfiguration(QueueNames.TrackProgress, appConfiguration);
-            configuration.AdvancedConfiguration.UseNewtonsoftJsonSerializer();
-            configuration.AdvancedConfiguration.UseMessageConventions();
-            configuration.AdvancedConfiguration.EnableInstallers();
-            return configuration;
+            try
+            {
+                var configuration = ServiceBusEndpointFactory.CreateSingleQueueConfiguration(QueueNames.TrackProgress, appConfiguration, useManagedIdentity);
+                configuration.AdvancedConfiguration.UseNewtonsoftJsonSerializer();
+                configuration.AdvancedConfiguration.UseMessageConventions();
+                configuration.AdvancedConfiguration.EnableInstallers();
+                return configuration;
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Problem configuring NSB {e.Message}", e);
+            }
         });
 
         builder.Services.AddSingleton<IApimClientConfiguration>(x => x.GetRequiredService<TrackProgressApiOptions>());
@@ -61,5 +67,12 @@ public class Startup : FunctionsStartup
             .AddHttpMessageHandler<Http.MessageHandlers.DefaultHeadersHandler>()
             .AddHttpMessageHandler<Http.MessageHandlers.ApimHeadersHandler>()
             .AddHttpMessageHandler<Http.MessageHandlers.LoggingMessageHandler>();
+    }
+
+    public void InitialiseNServiceBus()
+    {
+        var m = new NServiceBusResourceManager(Configuration, !Configuration.IsLocalAcceptanceOrDev());
+        m.CreateWorkAndErrorQueues(QueueNames.TrackProgress).GetAwaiter().GetResult();
+        m.SubscribeToTopicForQueue(typeof(Startup).Assembly, QueueNames.TrackProgress).GetAwaiter().GetResult();
     }
 }

@@ -6,14 +6,14 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["SFA.DAS.TrackProgress.jobs/SFA.DAS.TrackProgress.jobs.csproj", "SFA.DAS.TrackProgress.jobs/"]
-RUN dotnet restore "SFA.DAS.TrackProgress.jobs/SFA.DAS.TrackProgress.jobs.csproj"
+COPY ["SFA.DAS.TrackProgress.Jobs/SFA.DAS.TrackProgress.Jobs.csproj", "SFA.DAS.TrackProgress.Jobs/"]
+RUN dotnet restore "SFA.DAS.TrackProgress.Jobs/SFA.DAS.TrackProgress.Jobs.csproj"
 COPY . .
-WORKDIR "/src/SFA.DAS.TrackProgress.jobs"
-RUN dotnet build "SFA.DAS.TrackProgress.jobs.csproj" -c Release -o /app/build
+WORKDIR "/src/SFA.DAS.TrackProgress.Jobs"
+RUN dotnet build "SFA.DAS.TrackProgress.Jobs.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "SFA.DAS.TrackProgress.jobs.csproj" -c Release -o /app/publish
+RUN dotnet publish "SFA.DAS.TrackProgress.Jobs.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /home/site/wwwroot

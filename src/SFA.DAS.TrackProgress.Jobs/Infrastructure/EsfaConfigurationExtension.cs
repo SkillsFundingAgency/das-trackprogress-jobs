@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,7 +12,9 @@ internal static class EsfaConfigurationExtension
 {
     internal static void ConfigureConfiguration(this IFunctionsConfigurationBuilder builder)
     {
-        builder.ConfigurationBuilder.AddJsonFile("local.settings.json", optional: true);
+        builder.ConfigurationBuilder
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("local.settings.json", optional: true);
 
         var preConfig = builder.ConfigurationBuilder.Build();
 
