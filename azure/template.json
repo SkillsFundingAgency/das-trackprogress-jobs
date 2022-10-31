@@ -188,7 +188,7 @@
         },
         {
             "apiVersion": "2020-06-01",
-            "name": "[concat(variables('functionAppName'), '-apim-product-subscription-', parameters('utcValue'))]",
+            "name": "[concat(variables('functionAppName'), '-apim-product-sub-', parameters('utcValue'))]",
             "resourceGroup": "[parameters('sharedApimResourceGroup')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -323,7 +323,10 @@
                         "value": "[parameters('sharedServiceBusName')]"
                     }
                 }
-            }
+            },
+            "dependsOn": [
+                "[concat(variables('functionAppName'), '-', parameters('utcValue'))]"
+            ]
         }
     ],
     "outputs": {
