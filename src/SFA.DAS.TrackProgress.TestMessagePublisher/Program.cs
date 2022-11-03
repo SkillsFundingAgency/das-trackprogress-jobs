@@ -13,7 +13,7 @@ IConfiguration config = new ConfigurationBuilder()
 
 var connectionString = config["NServiceBusConnection"];
 if (connectionString is null)
-    throw new Exception("NServiceBusConnection should contain ServiceBus connection string");
+    throw new NotSupportedException("NServiceBusConnection should contain ServiceBus connection string");
 
 
 var endpointConfiguration = new EndpointConfiguration("SFA.DAS.TrackProgress");
@@ -34,34 +34,27 @@ transport.ConnectionString(connectionString);
 var endpointInstance = await Endpoint.Start(endpointConfiguration)
     .ConfigureAwait(false);
 
-try
+while (true)
 {
-    while (true)
-    {
-        Console.Clear();
-        Console.WriteLine("To Publish an Event please select the option...");
-        Console.WriteLine("1. Publish NewProgressAddedEvent");
-        Console.WriteLine("2. Send CachKsbsCommand");
-        Console.WriteLine("X. Exit");
+    Console.Clear();
+    Console.WriteLine("To Publish an Event please select the option...");
+    Console.WriteLine("1. Publish NewProgressAddedEvent");
+    Console.WriteLine("2. Send CachKsbsCommand");
+    Console.WriteLine("X. Exit");
 
-        var choice = Console.ReadLine()?.ToLower();
-        switch (choice)
-        {
-            case "1":
-                await PublishMessage(endpointInstance, new NewProgressAddedEvent {CommitmentsApprenticeshipId = 7887});
-                break;
-            case "2":
-                await SendMessage(endpointInstance, new CacheKsbsCommand {StandardUid = "CourseABC"});
-                break;
-            case "x":
-                await endpointInstance.Stop();
-                return;
-        }
+    var choice = Console.ReadLine()?.ToLower();
+    switch (choice)
+    {
+        case "1":
+            await PublishMessage(endpointInstance, new NewProgressAddedEvent {CommitmentsApprenticeshipId = 7887});
+            break;
+        case "2":
+            await SendMessage(endpointInstance, new CacheKsbsCommand {StandardUid = "CourseABC"});
+            break;
+        case "x":
+            await endpointInstance.Stop();
+            return;
     }
-}
-catch (Exception e)
-{
-    throw new Exception("Console failed", e);
 }
 
 async Task PublishMessage(IMessageSession messageSession, object message)

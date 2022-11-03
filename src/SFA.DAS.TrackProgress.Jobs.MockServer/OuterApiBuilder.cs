@@ -11,8 +11,6 @@ namespace SFA.DAS.TrackProgress.Jobs.MockServer;
 
 public class OuterApiBuilder
 {
-    private static JsonSerializerSettings DefaultSerializerSettings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
-
     private readonly WireMockServer _server;
 
     public OuterApiBuilder(int port)

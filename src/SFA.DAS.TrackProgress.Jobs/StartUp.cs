@@ -39,18 +39,11 @@ public class Startup : FunctionsStartup
 
         builder.UseNServiceBus((IConfiguration appConfiguration) =>
         {
-            try
-            {
-                var configuration = ServiceBusEndpointFactory.CreateSingleQueueConfiguration(QueueNames.TrackProgress, appConfiguration, useManagedIdentity);
-                configuration.AdvancedConfiguration.UseNewtonsoftJsonSerializer();
-                configuration.AdvancedConfiguration.UseMessageConventions();
-                configuration.AdvancedConfiguration.EnableInstallers();
-                return configuration;
-            }
-            catch (Exception e)
-            {
-                throw new Exception($"Problem configuring NSB {e.Message}", e);
-            }
+            var configuration = ServiceBusEndpointFactory.CreateSingleQueueConfiguration(QueueNames.TrackProgress, appConfiguration, useManagedIdentity);
+            configuration.AdvancedConfiguration.UseNewtonsoftJsonSerializer();
+            configuration.AdvancedConfiguration.UseMessageConventions();
+            configuration.AdvancedConfiguration.EnableInstallers();
+            return configuration;
         });
 
         builder.Services.AddSingleton<IApimClientConfiguration>(x => x.GetRequiredService<TrackProgressApiOptions>());
