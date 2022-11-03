@@ -10,7 +10,7 @@ namespace SFA.DAS.NServiceBus.AzureFunction.Extensions
 
         public LogIncomingBehaviour()
         {
-            _logger = LoggerFactory.Create(b => b.Services.AddLogging(c=>c.AddConsole())).CreateLogger<LogIncomingBehaviour>();
+            _logger = LoggerFactory.Create(b => b.Services.AddLogging()).CreateLogger<LogIncomingBehaviour>();
         }
 
         public async Task Invoke(IIncomingLogicalMessageContext context, Func<IIncomingLogicalMessageContext, Task> next)
@@ -29,7 +29,7 @@ namespace SFA.DAS.NServiceBus.AzureFunction.Extensions
 
         public LogOutgoingBehaviour()
         {
-            _logger = LoggerFactory.Create(b => b.Services.AddLogging(c => c.AddConsole())).CreateLogger<LogOutgoingBehaviour>();
+            _logger = LoggerFactory.Create(b => b.Services.AddLogging()).CreateLogger<LogOutgoingBehaviour>();
         }
 
         public async Task Invoke(IOutgoingLogicalMessageContext context, Func<IOutgoingLogicalMessageContext, Task> next)

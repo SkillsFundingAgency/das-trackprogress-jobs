@@ -9,36 +9,27 @@ public static class ServiceBusEndpointFactory
 {
     public static ServiceBusTriggeredEndpointConfiguration CreateSingleQueueConfiguration(string endpointAndQueueName, IConfiguration appConfiguration, bool useManagedIdentity)
     {
-        try
+        var configuration = new ServiceBusTriggeredEndpointConfiguration(
+            endpointName: endpointAndQueueName,
+            configuration: appConfiguration);
+
+        configuration.AdvancedConfiguration.SendFailedMessagesTo($"{endpointAndQueueName}-error");
+        configuration.AdvancedConfiguration.Pipeline.Register(new LogIncomingBehaviour(), nameof(LogIncomingBehaviour));
+        configuration.AdvancedConfiguration.Pipeline.Register(new LogOutgoingBehaviour(), nameof(LogOutgoingBehaviour));
+
+        if (useManagedIdentity)
         {
-            var configuration = new ServiceBusTriggeredEndpointConfiguration(
-                endpointName: endpointAndQueueName,
-                configuration: appConfiguration);
-
-            configuration.AdvancedConfiguration.SendFailedMessagesTo($"{endpointAndQueueName}-error");
-            configuration.AdvancedConfiguration.Pipeline.Register(new LogIncomingBehaviour(), nameof(LogIncomingBehaviour));
-            configuration.AdvancedConfiguration.Pipeline.Register(new LogOutgoingBehaviour(), nameof(LogOutgoingBehaviour));
-
-            if (useManagedIdentity)
-            {
-                configuration.Transport.ConnectionString(appConfiguration.NServiceBusFullNamespace());
-                configuration.Transport.CustomTokenCredential(new DefaultAzureCredential());
-                configuration.AdvancedConfiguration.License(appConfiguration.NServiceBusLicense());
-            }
-
-            configuration.Transport.SubscriptionRuleNamingConvention(AzureRuleNameShortener.Shorten);
-            configuration.LogDiagnostics();
-
-            var persistence = configuration.AdvancedConfiguration.UsePersistence<AzureTablePersistence>();
-            persistence.ConnectionString(appConfiguration.GetConnectionStringOrSetting("AzureWebJobsStorage"));
-
-            return configuration;
-
-        }
-        catch (Exception e)
-        {
-            throw new Exception($"Create Single Queue Configuration {e.Message}", e);
+            configuration.Transport.ConnectionString(appConfiguration.NServiceBusFullNamespace());
+            configuration.Transport.CustomTokenCredential(new DefaultAzureCredential());
+            configuration.AdvancedConfiguration.License(appConfiguration.NServiceBusLicense());
         }
 
+        configuration.Transport.SubscriptionRuleNamingConvention(AzureRuleNameShortener.Shorten);
+        configuration.LogDiagnostics();
+
+        var persistence = configuration.AdvancedConfiguration.UsePersistence<AzureTablePersistence>();
+        persistence.ConnectionString(appConfiguration.GetConnectionStringOrSetting("AzureWebJobsStorage"));
+
+        return configuration;
     }
 }

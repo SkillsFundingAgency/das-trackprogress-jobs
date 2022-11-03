@@ -34,9 +34,6 @@ public class NServiceBusResourceManager
 
     public async Task SubscribeToTopicForQueue(Assembly myAssembly, string queueName, string topicName = "bundle-1")
     {
-        if (myAssembly == null) throw new ArgumentNullException(nameof(myAssembly));
-        if (myAssembly == null) throw new ArgumentNullException(nameof(myAssembly));
-
         var attribute = myAssembly.GetTypes()
             .SelectMany(t => t.GetMethods())
             .Where(m => m.GetCustomAttribute<FunctionNameAttribute>(false) != null)
@@ -44,15 +41,9 @@ public class NServiceBusResourceManager
             .SelectMany(p => p.GetCustomAttributes<ServiceBusTriggerAttribute>(false))
             .FirstOrDefault();
         if (attribute == null)
-            throw new Exception("No FunctionName or ServiceBusTrigger endpoint was found");
-        try
-        {
-            await CreateSubscription(topicName, queueName);
-        }
-        catch (Exception e)
-        {
-            throw new Exception($"Error running auto subscribe {e.Message}", e);
-        }
+            throw new NotSupportedException("No FunctionName or ServiceBusTrigger endpoint was found");
+
+        await CreateSubscription(topicName, queueName);
     }
 
     private async Task CreateSubscription(string topicName, string queueName)
