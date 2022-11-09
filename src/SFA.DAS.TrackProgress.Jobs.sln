@@ -1,0 +1,74 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.TrackProgress.TestMessagePublisher", "SFA.DAS.TrackProgress.TestMessagePublisher\SFA.DAS.TrackProgress.TestMessagePublisher.csproj", "{77960B9C-50F2-4547-B976-897C4DD02261}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{0958590A-7C76-4CB4-9D2C-F9E46AF512AC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.NServiceBus.Extensions", "SFA.DAS.NServiceBus.Extensions\SFA.DAS.NServiceBus.Extensions.csproj", "{638AA330-2DCC-4255-BA0D-760B404477E7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.NServiceBus.AzureFunction.Extensions", "SFA.DAS.NServiceBus.AzureFunction.Extensions\SFA.DAS.NServiceBus.AzureFunction.Extensions.csproj", "{29131587-E2D9-4BAA-90A5-5522A6CD2A46}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.TrackProgress.Jobs.Tests", "SFA.DAS.TrackProgress.Jobs.Tests\SFA.DAS.TrackProgress.Jobs.Tests.csproj", "{4A0AE124-9BDE-473D-BA58-AD550A2B1BFF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.NServiceBus.Extensions.UnitTests", "SFA.DAS.NServiceBus.Extensions.UnitTests\SFA.DAS.NServiceBus.Extensions.UnitTests.csproj", "{BA8900D4-940F-480D-AD0E-01035917D25B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.NServiceBus.AzureFunction.Extensions.UnitTests", "SFA.DAS.NServiceBus.AzureFunction.Extensions.UnitTests\SFA.DAS.NServiceBus.AzureFunction.Extensions.UnitTests.csproj", "{30E0EE94-38A5-4A7C-92B9-D3679CD18FDB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.TrackProgress.Jobs.MockServer", "SFA.DAS.TrackProgress.Jobs.MockServer\SFA.DAS.TrackProgress.Jobs.MockServer.csproj", "{CA284AB6-F9F4-4C37-A903-0FCF5C5AB48E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.TrackProgress.Jobs", "SFA.DAS.TrackProgress.Jobs\SFA.DAS.TrackProgress.Jobs.csproj", "{A2460B81-D713-4872-800B-423890938286}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{77960B9C-50F2-4547-B976-897C4DD02261}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77960B9C-50F2-4547-B976-897C4DD02261}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77960B9C-50F2-4547-B976-897C4DD02261}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77960B9C-50F2-4547-B976-897C4DD02261}.Release|Any CPU.Build.0 = Release|Any CPU
+		{638AA330-2DCC-4255-BA0D-760B404477E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{638AA330-2DCC-4255-BA0D-760B404477E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{638AA330-2DCC-4255-BA0D-760B404477E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{638AA330-2DCC-4255-BA0D-760B404477E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29131587-E2D9-4BAA-90A5-5522A6CD2A46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29131587-E2D9-4BAA-90A5-5522A6CD2A46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29131587-E2D9-4BAA-90A5-5522A6CD2A46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29131587-E2D9-4BAA-90A5-5522A6CD2A46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A0AE124-9BDE-473D-BA58-AD550A2B1BFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A0AE124-9BDE-473D-BA58-AD550A2B1BFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A0AE124-9BDE-473D-BA58-AD550A2B1BFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A0AE124-9BDE-473D-BA58-AD550A2B1BFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA8900D4-940F-480D-AD0E-01035917D25B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA8900D4-940F-480D-AD0E-01035917D25B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA8900D4-940F-480D-AD0E-01035917D25B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA8900D4-940F-480D-AD0E-01035917D25B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30E0EE94-38A5-4A7C-92B9-D3679CD18FDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30E0EE94-38A5-4A7C-92B9-D3679CD18FDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30E0EE94-38A5-4A7C-92B9-D3679CD18FDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30E0EE94-38A5-4A7C-92B9-D3679CD18FDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA284AB6-F9F4-4C37-A903-0FCF5C5AB48E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA284AB6-F9F4-4C37-A903-0FCF5C5AB48E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA284AB6-F9F4-4C37-A903-0FCF5C5AB48E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA284AB6-F9F4-4C37-A903-0FCF5C5AB48E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2460B81-D713-4872-800B-423890938286}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2460B81-D713-4872-800B-423890938286}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2460B81-D713-4872-800B-423890938286}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2460B81-D713-4872-800B-423890938286}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{77960B9C-50F2-4547-B976-897C4DD02261} = {0958590A-7C76-4CB4-9D2C-F9E46AF512AC}
+		{4A0AE124-9BDE-473D-BA58-AD550A2B1BFF} = {0958590A-7C76-4CB4-9D2C-F9E46AF512AC}
+		{CA284AB6-F9F4-4C37-A903-0FCF5C5AB48E} = {0958590A-7C76-4CB4-9D2C-F9E46AF512AC}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0FBCFA61-0579-4AAB-9441-936F1AE7D55C}
+	EndGlobalSection
+EndGlobal
