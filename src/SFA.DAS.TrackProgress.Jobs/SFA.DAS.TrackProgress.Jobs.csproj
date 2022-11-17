@@ -16,7 +16,7 @@
     <PackageReference Include="RestEase.HttpClientFactory" Version="1.5.7" />
     <PackageReference Include="SFA.DAS.Configuration.AzureTableStorage" Version="3.0.84" />
     <PackageReference Include="SFA.DAS.Http" Version="3.2.69" />
-    <PackageReference Include="SFA.DAS.NServiceBus.AzureFunction.Extensions" Version="17.1.14-prerelease-47" />
+    <PackageReference Include="SFA.DAS.NServiceBus.AzureFunction.Extensions" Version="17.1.14" />
     <PackageReference Include="SFA.DAS.TrackProgress.Messages" Version="0.1.5-prerelease-39" />
   </ItemGroup>
   <ItemGroup>
