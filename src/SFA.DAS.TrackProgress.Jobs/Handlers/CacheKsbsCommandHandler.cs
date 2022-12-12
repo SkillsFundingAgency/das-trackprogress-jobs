@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 using NServiceBus;
 using SFA.DAS.TrackProgress.Jobs.Api;
 using SFA.DAS.TrackProgress.Messages.Commands;
-using SFA.DAS.TrackProgress.Messages.Events;
 
 namespace SFA.DAS.TrackProgress.Jobs.Handlers;
 
