@@ -69,6 +69,12 @@
             "type": "string",
             "defaultValue": "[utcNow()]"
         },
+        "corsPolicies": {
+            "type": "array",
+            "defaultValue": [
+                "*"
+            ]
+        },
         "sharedApimResourceGroup": {
             "type": "string"
         },
@@ -299,6 +305,35 @@
             "dependsOn": [
                 "[variables('resourceGroupName')]",
                 "[concat(variables('appServicePlanName'), '-', parameters('utcValue'))]"
+            ]
+        },
+        {
+            "apiVersion": "2022-09-01",
+            "name": "[concat(variables('functionAppName'), '-cors-policies-', parameters('utcValue'))]",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[variables('resourceGroupName')]",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": [
+                        {
+                            "type": "Microsoft.Web/sites/config",
+                            "name": "[concat(variables('functionAppName'), '/web')]",
+                            "apiVersion": "2020-10-01",
+                            "properties": {
+                                "cors": {
+                                    "allowedOrigins": "[parameters('corsPolicies')]",
+                                    "supportCredentials": false
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('functionAppName'), '-', parameters('utcValue'))]"
             ]
         },
         {
