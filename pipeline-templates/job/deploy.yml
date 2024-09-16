@@ -6,7 +6,9 @@ parameters:
 jobs:
 - deployment: DeployFunctionApp
   pool:
-    name: DAS - Continuous Deployment Agents
+    name: DAS - Continuous Deployment Beta
+    demands:
+      - agent.os -equals Windows_NT
   environment: ${{ parameters.Environment }}
   strategy:
     runOnce:
